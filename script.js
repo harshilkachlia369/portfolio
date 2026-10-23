@@ -362,3 +362,143 @@ renderAllProjects();
 const initialPage = location.hash.replace("#", "") || "home";
 
 navigateTo(initialPage, false);
+
+/* ========================================
+   CUSTOM CURSOR — TRACKING + HIGHLIGHT
+======================================== */
+
+(() => {
+  const halo = document.querySelector(".cursor-halo");
+  const dot = document.querySelector(".cursor-dot");
+
+  if (!halo || !dot || !window.matchMedia("(pointer: fine)").matches) {
+    return;
+  }
+
+  let mouseX = -100;
+  let mouseY = -100;
+  let haloX = -100;
+  let haloY = -100;
+  let animationFrame = null;
+
+  function moveCursor(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+
+    document.body.classList.add("cursor-ready");
+
+    dot.style.transform =
+      `translate3d(${mouseX - 3.5}px, ${mouseY - 3.5}px, 0)`;
+
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(animateHalo);
+    }
+  }
+
+  function animateHalo() {
+    haloX += (mouseX - haloX) * 0.17;
+    haloY += (mouseY - haloY) * 0.17;
+
+    halo.style.transform =
+      `translate3d(${haloX - 19}px, ${haloY - 19}px, 0)`;
+
+    if (
+      Math.abs(mouseX - haloX) > 0.2 ||
+      Math.abs(mouseY - haloY) > 0.2
+    ) {
+      animationFrame = requestAnimationFrame(animateHalo);
+    } else {
+      animationFrame = null;
+    }
+  }
+
+  document.addEventListener("mousemove", moveCursor);
+
+  document.addEventListener("mouseover", event => {
+    const target = event.target;
+
+    if (
+      target instanceof Element &&
+      target.closest("a, button, .project-card, .interest-card")
+    ) {
+      document.body.classList.add("cursor-hover");
+    }
+  });
+
+  document.addEventListener("mouseout", event => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest("a, button, .project-card, .interest-card") &&
+      (!event.relatedTarget ||
+        !(event.relatedTarget instanceof Element) ||
+        !event.relatedTarget.closest("a, button, .project-card, .interest-card"))
+    ) {
+      document.body.classList.remove("cursor-hover");
+    }
+  });
+
+  document.addEventListener("mouseleave", () => {
+    document.body.classList.remove("cursor-ready");
+  });
+
+  document.addEventListener("mouseenter", () => {
+    document.body.classList.add("cursor-ready");
+  });
+})();
+
+/* ========================================
+   PAGE TRANSITION — PROJECT NOTES
+======================================== */
+
+const transitionOverlay = document.querySelector(".transition-wipe");
+
+function playProjectTransition(callback) {
+  if (!transitionOverlay) {
+    callback();
+    return;
+  }
+
+  transitionOverlay.classList.remove("play");
+
+  // Force a reflow so the animation restarts on every click.
+  void transitionOverlay.offsetWidth;
+
+  transitionOverlay.classList.add("play");
+
+  // Change the page while the orange overlay covers it.
+  window.setTimeout(callback, 300);
+
+  window.setTimeout(() => {
+    transitionOverlay.classList.remove("play");
+  }, 950);
+}
+
+/*
+  Replace the existing project-button click handler inside
+  your document.addEventListener("click", ...) with this
+  project-button section.
+*/
+
+/*
+  Find this existing code:
+
+  const projectButton = event.target.closest("[data-project]");
+
+  if (projectButton) {
+    renderProjectDetail(projectButton.dataset.project);
+  }
+
+  Replace it with the following:
+*/
+
+document.addEventListener("click", event => {
+  const projectButton = event.target.closest("[data-project]");
+
+  if (!projectButton) return;
+
+  const projectId = projectButton.dataset.project;
+
+  playProjectTransition(() => {
+    renderProjectDetail(projectId);
+  });
+});
