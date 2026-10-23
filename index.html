@@ -3,469 +3,404 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f4efe5">
-  <meta name="description" content="Harshil Kachalia — student developer, maker, and explorer building projects in technology, robotics, and science.">
-  <title>Harshil Kachalia — Maker & Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4eadb">
+  <meta name="description" content="Harshil Kachalia — student developer, maker and explorer.">
+  <title>Harshil Kachalia | Developer & Maker</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
- 
-<!-- Custom cursor -->
-<div class="cursor-halo" aria-hidden="true"></div>
-<div class="cursor-dot" aria-hidden="true"></div>
 
-<!-- Page transition overlay -->
-<div class="transition-wipe" aria-hidden="true">
-  <span>EXPLORING IDEAS<span class="accent-text">.</span></span>
-</div>
+  <div class="site-background" aria-hidden="true"></div>
+  <div class="cursor-halo" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
 
-  <div class="site-shell">
-
-    <header class="topbar">
-      <a href="#home" class="wordmark" aria-label="Harshil Kachalia home">
-        HK<span class="wordmark-dot">.</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Main navigation">
-        <button class="nav-link active" data-page="home">Home</button>
-        <button class="nav-link" data-page="projects">Projects</button>
-        <button class="nav-link" data-page="achievements">Achievements</button>
-        <button class="nav-link" data-page="about">About</button>
-      </nav>
-
-      <a class="contact-link" href="mailto:exp.hrk@gmail.com">
-        Get in touch <span>↗</span>
-      </a>
-
-      <button
-        class="menu-toggle"
-        id="menuToggle"
-        aria-label="Toggle navigation"
-        aria-expanded="false"
-        aria-controls="mainNavigation"
-      >
-        <span></span>
-        <span></span>
-      </button>
-    </header>
-
-    <main id="app">
-
-      <!-- HOME PAGE -->
-      <section class="page active" id="home" aria-labelledby="home-title">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">
-              <span class="status-dot"></span>
-              STUDENT DEVELOPER · MAKER · EXPLORER
-            </p>
-
-            <h1 id="home-title">
-              Curiosity is<br>
-              where it <span class="accent-text">starts.</span>
-            </h1>
-
-            <p class="hero-description">
-              I'm Harshil — a student who enjoys exploring technology,
-              building things, and turning questions into experiments.
-              I'm here to learn by making, testing, and improving.
-            </p>
-
-            <div class="hero-actions">
-              <button class="button button-dark" data-go="projects">
-                Explore my work <span>↗</span>
-              </button>
-
-              <button class="button button-outline" data-go="about">
-                A little about me
-              </button>
-            </div>
-
-            <div class="hero-meta">
-              <div><span class="meta-number">01</span><span>Build</span></div>
-              <div><span class="meta-number">02</span><span>Experiment</span></div>
-              <div><span class="meta-number">03</span><span>Improve</span></div>
-            </div>
-          </div>
-
-          <div class="hero-art" aria-label="Abstract maker-inspired graphic">
-            <div class="art-topline">
-              <span>PERSONAL PORTFOLIO</span>
-              <span>EST. IN CURIOSITY</span>
-            </div>
-
-            <div class="orbit orbit-one"></div>
-            <div class="orbit orbit-two"></div>
-            <div class="orbit orbit-three"></div>
-
-            <div class="art-core">H<span>K</span></div>
-
-            <div class="art-cross cross-one">+</div>
-            <div class="art-cross cross-two">×</div>
-
-            <div class="art-label label-one">IDEAS → PROTOTYPES</div>
-            <div class="art-label label-two">ALWAYS LEARNING</div>
-            <div class="art-coordinate">23° / 72° / ∞</div>
-
-            <div class="art-bottomline">
-              <span>THINK IN SYSTEMS</span>
-              <span>MAKE IT REAL.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-divider"></div>
-
-        <section class="home-lower">
-          <div>
-            <p class="eyebrow">A WIDE FIELD OF CURIOSITY</p>
-            <h2>
-              Different interests.<br>
-              <span class="muted-text">One instinct: explore.</span>
-            </h2>
-          </div>
-
-          <div class="interest-grid">
-            <article class="interest-card">
-              <span class="interest-index">01 / DIGITAL</span>
-              <h3>Web development</h3>
-              <p>Building interactive websites and digital experiences.</p>
-            </article>
-
-            <article class="interest-card">
-              <span class="interest-index">02 / INTELLIGENCE</span>
-              <h3>AI & computing</h3>
-              <p>Exploring how software can understand, assist, and create.</p>
-            </article>
-
-            <article class="interest-card">
-              <span class="interest-index">03 / PHYSICAL</span>
-              <h3>Robotics & electronics</h3>
-              <p>Connecting code, sensors, motors, and real-world behaviour.</p>
-            </article>
-
-            <article class="interest-card">
-              <span class="interest-index">04 / DISCOVERY</span>
-              <h3>Science & design</h3>
-              <p>Asking questions, testing ideas, and learning from evidence.</p>
-            </article>
-
-            <article class="interest-card">
-              <span class="interest-index">05 / TEAMWORK</span>
-              <h3>Sports & leadership</h3>
-              <p>Practising discipline, communication, and collaboration.</p>
-            </article>
-
-            <article class="interest-card">
-              <span class="interest-index">06 / EXPRESSION</span>
-              <h3>Speaking & creativity</h3>
-              <p>Sharing ideas through presentations, performance, and storytelling.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="featured-section">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">SELECTED WORK</p>
-              <h2>Ideas in progress<span class="accent-text">.</span></h2>
-            </div>
-
-            <button class="text-link" data-go="projects">
-              All projects ↗
-            </button>
-          </div>
-
-          <div class="project-grid" id="featuredProjects"></div>
-        </section>
-      </section>
-
-      <!-- PROJECTS PAGE -->
-      <section class="page" id="projects" aria-labelledby="projects-title">
-        <div class="page-heading">
-          <p class="eyebrow">THE WORKBENCH / 01</p>
-
-          <h1 id="projects-title">
-            Built to learn.<br>
-            <span class="accent-text">Made to improve.</span>
-          </h1>
-
-          <p>
-            Projects, prototypes, and ideas I've explored through code,
-            electronics, design, and science.
-          </p>
-        </div>
-
-        <div class="filter-bar" id="projectFilters" aria-label="Filter projects">
-          <button class="filter-button active" data-filter="All" aria-pressed="true">All work</button>
-          <button class="filter-button" data-filter="Robotics" aria-pressed="false">Robotics</button>
-          <button class="filter-button" data-filter="AI & Software" aria-pressed="false">AI & software</button>
-          <button class="filter-button" data-filter="Science" aria-pressed="false">Science</button>
-          <button class="filter-button" data-filter="Community" aria-pressed="false">Community</button>
-        </div>
-
-        <div class="project-grid project-grid-large" id="allProjects"></div>
-      </section>
-<!-- ZERO2MAKER SECTION -->
-<section class="z2m-section" id="zero2maker">
-  <div class="z2m-topline">
-    <span class="z2m-dot"></span>
-    CURRENTLY LEARNING
+  <div class="transition-wipe" aria-hidden="true">
+    <span>EXPLORING IDEAS<span class="accent-text">.</span></span>
   </div>
 
-  <div class="z2m-content">
-    <div class="z2m-text">
-      <p class="z2m-eyebrow">MY LEARNING JOURNEY / 001</p>
+  <header class="site-header">
+    <a class="brand" href="#home" data-go="home">HK<span>.</span></a>
 
-      <h2>
-        Learning by<br />
-        <span>making things.</span>
-      </h2>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-link active" data-go="home">Home</button>
+      <button class="nav-link" data-go="projects">Projects</button>
+      <button class="nav-link" data-go="achievements">Achievements</button>
+      <button class="nav-link" data-go="about">About</button>
+    </nav>
 
-      <p class="z2m-description">
-        I'm currently learning at Zero2Maker, where I'm exploring
-        technology through hands-on learning, experimentation, and
-        building projects. I'm growing my skills in robotics,
-        electronics, CAD, and web development.
+    <a class="header-contact" href="mailto:exp.hrk@gmail.com">
+      Get in touch <span>↗</span>
+    </a>
+  </header>
+
+  <main class="site-main">
+
+    <!-- HOME -->
+    <section class="page active" data-page="home" id="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot"></span> STUDENT DEVELOPER · MAKER · EXPLORER</p>
+          <h1>Curious by<br>nature.<br><span>Builder by choice.</span></h1>
+          <p class="hero-description">
+            I'm Harshil, a student exploring technology by building,
+            experimenting and turning ideas into things that work.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-primary" data-go="projects">Explore my work ↗</button>
+            <button class="button button-secondary" data-go="about">Get to know me</button>
+          </div>
+          <div class="hero-footnote">
+            <span>INDIA</span><span>ALWAYS LEARNING</span>
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="art-grid"></div>
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-center">HK<span>.</span></div>
+          <span class="art-label art-label-top">IDEAS IN PROGRESS</span>
+          <span class="art-label art-label-bottom">THINK / BUILD / IMPROVE</span>
+          <span class="art-coordinate">CREATIVE MODE · 001</span>
+        </div>
+      </div>
+
+      <div class="ticker">
+        <span>ROBOTICS</span><i>✳</i>
+        <span>ARTIFICIAL INTELLIGENCE</span><i>✳</i>
+        <span>ELECTRONICS</span><i>✳</i>
+        <span>WEB DEVELOPMENT</span><i>✳</i>
+        <span>CAD & DESIGN</span>
+      </div>
+
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SELECTED WORK / 001</p>
+          <h2>Ideas made <span>real.</span></h2>
+        </div>
+        <button class="text-link" data-go="projects">All projects ↗</button>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-art art-plant">
+            <span class="project-number">01 / SCIENCE</span>
+            <div class="project-symbol">✳</div>
+            <span class="art-bottom-label">SENSE THE INVISIBLE</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">PLANT SCIENCE</p><h3>Plant Whisperer</h3></div>
+            <button class="round-arrow" data-project="plant-whisperer" aria-label="Explore Plant Whisperer">↗</button>
+          </div>
+          <p class="project-summary">Exploring plant electrical signals as possible indicators of water stress.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-robot">
+            <span class="project-number">02 / ROBOTICS</span>
+            <div class="project-symbol">◈</div>
+            <span class="art-bottom-label">DESIGNED TO MOVE</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">HARDWARE</p><h3>Robotic Dog</h3></div>
+            <button class="round-arrow" data-project="robotic-dog" aria-label="Explore Robotic Dog">↗</button>
+          </div>
+          <p class="project-summary">Learning about servos, sensors, movement and robot design.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-gesture">
+            <span class="project-number">03 / AI</span>
+            <div class="project-symbol">◎</div>
+            <span class="art-bottom-label">INTERACTION REIMAGINED</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">COMPUTER VISION</p><h3>AI Gesture Control</h3></div>
+            <button class="round-arrow" data-project="ai-gesture-control" aria-label="Explore AI Gesture Control">↗</button>
+          </div>
+          <p class="project-summary">Experimenting with hand gestures to control a website.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-lifelink">
+            <span class="project-number">04 / INNOVATION</span>
+            <div class="project-symbol">+</div>
+            <span class="art-bottom-label">CARE THROUGH DESIGN</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">ASSISTIVE TECHNOLOGY</p><h3>LifeLink</h3></div>
+            <button class="round-arrow" data-project="lifelink" aria-label="Explore LifeLink">↗</button>
+          </div>
+          <p class="project-summary">A senior-care station concept for reminders, routines and assistance.</p>
+        </article>
+      </div>
+
+      <div class="home-cta">
+        <p class="eyebrow">THE NEXT IDEA STARTS HERE</p>
+        <h2>Still learning.<br><span>Always building.</span></h2>
+        <button class="button button-primary" data-go="about">More about me ↗</button>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="page" data-page="projects" id="projects">
+      <div class="page-intro">
+        <p class="eyebrow">EXPERIMENTS, BUILDS & IDEAS / 002</p>
+        <h1>A work in <span>progress.</span></h1>
+        <p>Projects and experiments that help me learn by building, testing and improving.</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-art art-plant"><span class="project-number">01 / SCIENCE</span><div class="project-symbol">✳</div><span class="art-bottom-label">SENSE THE INVISIBLE</span></div>
+          <div class="project-card-info"><div><p class="project-category">PLANT SCIENCE</p><h3>Plant Whisperer</h3></div><button class="round-arrow" data-project="plant-whisperer" aria-label="Explore Plant Whisperer">↗</button></div>
+          <p class="project-summary">Exploring plant electrical signals and water-stress detection.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-robot"><span class="project-number">02 / ROBOTICS</span><div class="project-symbol">◈</div><span class="art-bottom-label">DESIGNED TO MOVE</span></div>
+          <div class="project-card-info"><div><p class="project-category">HARDWARE</p><h3>Robotic Dog</h3></div><button class="round-arrow" data-project="robotic-dog" aria-label="Explore Robotic Dog">↗</button></div>
+          <p class="project-summary">Learning about servo control, sensing and robot movement.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-gesture"><span class="project-number">03 / AI</span><div class="project-symbol">◎</div><span class="art-bottom-label">INTERACTION REIMAGINED</span></div>
+          <div class="project-card-info"><div><p class="project-category">COMPUTER VISION</p><h3>AI Gesture Control</h3></div><button class="round-arrow" data-project="ai-gesture-control" aria-label="Explore AI Gesture Control">↗</button></div>
+          <p class="project-summary">A browser experiment using hand gestures for interaction.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-lifelink"><span class="project-number">04 / INNOVATION</span><div class="project-symbol">+</div><span class="art-bottom-label">CARE THROUGH DESIGN</span></div>
+          <div class="project-card-info"><div><p class="project-category">ASSISTIVE TECHNOLOGY</p><h3>LifeLink</h3></div><button class="round-arrow" data-project="lifelink" aria-label="Explore LifeLink">↗</button></div>
+          <p class="project-summary">A concept for supporting senior-care routines and reminders.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-gitclub"><span class="project-number">05 / COMMUNITY</span><div class="project-symbol">{ }</div><span class="art-bottom-label">BUILD TOGETHER</span></div>
+          <div class="project-card-info"><div><p class="project-category">OPEN SOURCE</p><h3>GitClub</h3></div><button class="round-arrow" data-project="gitclub" aria-label="Explore GitClub">↗</button></div>
+          <p class="project-summary">A student initiative to help others explore GitHub and collaboration.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-specwise"><span class="project-number">06 / WEB APP</span><div class="project-symbol">⌘</div><span class="art-bottom-label">UNDERSTAND YOUR MACHINE</span></div>
+          <div class="project-card-info"><div><p class="project-category">WEB DEVELOPMENT</p><h3>SpecWise</h3></div><button class="round-arrow" data-project="specwise" aria-label="Explore SpecWise">↗</button></div>
+          <p class="project-summary">A PC capability analyzer concept for understanding hardware and usage.</p>
+        </article>
+
+        <article class="project-card">
+          <div class="project-art art-swasth"><span class="project-number">07 / WELLNESS</span><div class="project-symbol">✚</div><span class="art-bottom-label">HEALTHIER EVERYDAY LIVES</span></div>
+          <div class="project-card-info"><div><p class="project-category">APP CONCEPT</p><h3>Swasth Bharat</h3></div><button class="round-arrow" data-project="swasth-bharat" aria-label="Explore Swasth Bharat">↗</button></div>
+          <p class="project-summary">A family wellness app concept inspired by everyday Indian life.</p>
+        </article>
+
+        <!-- IT RURAL QUIZ: EXPERIENCE, NOT A SOFTWARE PROJECT -->
+        <article class="project-card">
+          <div class="project-art art-quiz">
+            <span class="project-number">08 / TECHNOLOGY QUIZ</span>
+            <div class="project-symbol">IT</div>
+            <span class="art-bottom-label">KNOWLEDGE IN ACTION</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">COMPETITION · LEARNING</p><h3>TCS IT Rural Quiz</h3></div>
+            <button class="round-arrow" data-project="it-rural-quiz" aria-label="Explore TCS IT Rural Quiz experience">↗</button>
+          </div>
+          <p class="project-summary">Preparing and participating in a technology quiz, exploring IT concepts, digital innovation and the technology ecosystem.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECT DETAIL: USED BY YOUR JAVASCRIPT -->
+    <section class="page" data-page="project-detail" id="project-detail">
+      <button class="back-link" data-go="projects">← Back to projects</button>
+      <div id="project-detail-content">
+        <p class="eyebrow">PROJECT / DETAILS</p>
+        <h1>Ideas in <span>progress.</span></h1>
+        <p>Select a project to explore more about it.</p>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="page" data-page="achievements" id="achievements">
+      <div class="page-intro">
+        <p class="eyebrow">MILESTONES & RECOGNITION / 003</p>
+        <h1>Progress worth <span>remembering.</span></h1>
+        <p>Experiences that challenge me to learn, participate, lead and keep improving.</p>
+      </div>
+
+      <div class="achievement-list">
+        <article class="achievement-card">
+          <div class="achievement-index">01</div>
+          <div class="achievement-copy">
+            <p class="project-category">TECHNOLOGY · QUIZ</p>
+            <h2>TCS IT Rural Quiz</h2>
+            <p>
+              Took part in the TCS IT Rural Quiz journey, preparing across
+              information technology, internet safety, computing history,
+              emerging technologies and major technology companies.
+            </p>
+            <span class="achievement-tag">QUIZ & KNOWLEDGE</span>
+          </div>
+          <div class="achievement-side">IT<span>↗</span></div>
+        </article>
+
+        <article class="achievement-card">
+          <div class="achievement-index">02</div>
+          <div class="achievement-copy">
+            <p class="project-category">SCIENCE · INNOVATION</p>
+            <h2>Plant Whisperer</h2>
+            <p>
+              Developing a science project investigating plant electrical
+              signals and their potential use in studying water stress.
+            </p>
+            <span class="achievement-tag">SCIENTIFIC EXPLORATION</span>
+          </div>
+          <div class="achievement-side">BIO<span>↗</span></div>
+        </article>
+
+        <article class="achievement-card">
+          <div class="achievement-index">03</div>
+          <div class="achievement-copy">
+            <p class="project-category">SPORTS · LEADERSHIP</p>
+            <h2>District-level Volleyball</h2>
+            <p>
+              Participated in a district-level volleyball tournament as
+              captain, building teamwork, communication and leadership.
+            </p>
+            <span class="achievement-tag">TEAMWORK & LEADERSHIP</span>
+          </div>
+          <div class="achievement-side">TEAM<span>↗</span></div>
+        </article>
+
+        <article class="achievement-card">
+          <div class="achievement-index">04</div>
+          <div class="achievement-copy">
+            <p class="project-category">ACADEMICS</p>
+            <h2>Olympiad Journey</h2>
+            <p>
+              Participated in Olympiads from 2022 to 2025 and reached
+              Level 2 in an Olympiad in 2024.
+            </p>
+            <span class="achievement-tag">ACADEMIC DEVELOPMENT</span>
+          </div>
+          <div class="achievement-side">01<span>↗</span></div>
+        </article>
+
+        <article class="achievement-card">
+          <div class="achievement-index">05</div>
+          <div class="achievement-copy">
+            <p class="project-category">PUBLIC SPEAKING · PERFORMANCE</p>
+            <h2>Communication & Stage Experience</h2>
+            <p>
+              Took part in acting and social performances, including
+              performing before an audience of around 200 people.
+            </p>
+            <span class="achievement-tag">CONFIDENCE & COMMUNICATION</span>
+          </div>
+          <div class="achievement-side">LIVE<span>↗</span></div>
+        </article>
+      </div>
+
+      <p class="achievement-note">
+        Every milestone is part of the journey. More to learn, more to build.
       </p>
+    </section>
 
-      <a
-        class="z2m-button"
-        href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Explore my Zero2Maker website
-        <span aria-hidden="true">↗</span>
-      </a>
-    </div>
-
-    <div class="z2m-visual">
-      <span class="z2m-number">Z2M</span>
-      <div class="z2m-grid"></div>
-      <div class="z2m-circle"></div>
-      <span class="z2m-caption">LEARN / BUILD / EXPLORE</span>
-      <span class="z2m-index">2026 — ONGOING</span>
-    </div>
-  </div>
-</section>
-
-      <!-- INDIVIDUAL PROJECT NOTES PAGE -->
-      <section class="page" id="project-detail" aria-labelledby="detail-title">
-        <button class="back-link" data-go="projects">← Back to projects</button>
-        <div id="projectDetailContent"></div>
-      </section>
-
-      <!-- ACHIEVEMENTS PAGE -->
-      <section class="page" id="achievements" aria-labelledby="achievements-title">
-        <div class="page-heading">
-          <p class="eyebrow">MILESTONES / 02</p>
-
-          <h1 id="achievements-title">
-            Progress is more<br>
-            than a <span class="accent-text">prize.</span>
-          </h1>
-
-          <p>
-            Experiences that have helped me develop confidence, discipline,
-            curiosity, and the ability to work with others.
-          </p>
-        </div>
-
-        <div class="achievement-list">
-          <article class="achievement-row">
-            <div class="achievement-year">SPORTS</div>
-            <div>
-              <h3>District-level volleyball</h3>
-              <p>
-                Participated in a district-level volleyball tournament as
-                team captain, building teamwork, responsibility, and
-                decision-making under pressure.
-              </p>
-              <span class="tag">Team leadership</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-
-          <article class="achievement-row">
-            <div class="achievement-year">2024</div>
-            <div>
-              <h3>Olympiad — Level 2</h3>
-              <p>
-                Reached Level 2 in an Olympiad in 2024, following
-                participation in Olympiads across multiple years.
-              </p>
-              <span class="tag">Academic effort</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-
-          <article class="achievement-row">
-            <div class="achievement-year">PUBLIC SPEAKING</div>
-            <div>
-              <h3>Performed before an audience</h3>
-              <p>
-                Acted in front of approximately 200 people and took part
-                in singing and social performances to strengthen
-                communication and stage confidence.
-              </p>
-              <span class="tag">Communication</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-
-          <article class="achievement-row">
-            <div class="achievement-year">SCHOOL</div>
-            <div>
-              <h3>Student council selection</h3>
-              <p>
-                Passed the first stage of the student council selection
-                process and prepared for the next stage, including
-                presenting ideas for school clubs.
-              </p>
-              <span class="tag">Initiative</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-
-          <article class="achievement-row">
-            <div class="achievement-year">COMMUNITY</div>
-            <div>
-              <h3>Started building GitClub</h3>
-              <p>
-                Worked on a student-led initiative to help students learn
-                GitHub, collaborate on projects, and become more
-                comfortable with version control.
-              </p>
-              <span class="tag">Peer learning</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-
-          <article class="achievement-row">
-            <div class="achievement-year">SCIENCE</div>
-            <div>
-              <h3>Plant Whisperer</h3>
-              <p>
-                Explored a plant water-stress research concept using
-                electrical signals, with a focus on sensing, observation,
-                and evidence-based investigation.
-              </p>
-              <span class="tag">Scientific exploration</span>
-            </div>
-            <span class="achievement-symbol">↗</span>
-          </article>
-        </div>
-
-        <p class="small-note">
-          This page highlights experiences and milestones, not claims of
-          awards or placements that have not been confirmed.
+    <!-- ABOUT -->
+    <section class="page" data-page="about" id="about">
+      <div class="page-intro">
+        <p class="eyebrow">A LITTLE ABOUT ME / 004</p>
+        <h1>Curiosity is my <span>starting point.</span></h1>
+        <p>
+          I'm a student developer, maker and explorer who enjoys learning
+          how technology works by building and experimenting.
         </p>
-      </section>
+      </div>
 
-      <!-- ABOUT PAGE -->
-      <section class="page" id="about" aria-labelledby="about-title">
-        <div class="page-heading">
-          <p class="eyebrow">BEHIND THE BUILDS / 03</p>
-
-          <h1 id="about-title">
-            Still learning.<br>
-            <span class="accent-text">Always exploring.</span>
-          </h1>
-
+      <div class="about-grid">
+        <article class="about-panel about-intro">
+          <p class="eyebrow">WHO I AM</p>
+          <h2>Learning isn't just reading about it. It's <span>trying it.</span></h2>
           <p>
-            I'm a student developer and maker interested in understanding
-            how things work — and discovering what I can create with that
-            knowledge.
+            From robotics and electronics to websites and science projects,
+            I enjoy turning questions into experiments. I don't know
+            everything yet—and that's what makes learning exciting.
           </p>
+        </article>
+
+        <article class="about-panel">
+          <p class="eyebrow">MY INTERESTS</p>
+          <div class="interest-list">
+            <span>01 / Robotics</span>
+            <span>02 / Artificial Intelligence</span>
+            <span>03 / Electronics</span>
+            <span>04 / CAD & 3D Design</span>
+            <span>05 / Web Development</span>
+            <span>06 / Science & Innovation</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- ZEROTOMAKER: LEARNING AFFILIATION + WEBSITE -->
+      <section class="z2m-section" id="zero2maker">
+        <div class="z2m-topline">
+          <span class="z2m-dot"></span>
+          CURRENTLY LEARNING AT
         </div>
 
-        <div class="about-layout">
-          <div class="about-note">
-            <span class="note-mark">“</span>
-            <blockquote>
-              I don't want to only learn how something works. I want to
-              build it, test it, find what breaks, and make it better.
-            </blockquote>
-            <p class="note-caption">MY APPROACH TO LEARNING</p>
-          </div>
-
-          <div class="about-copy">
-            <p class="eyebrow">A LITTLE CONTEXT</p>
-            <h2>Learn by making.</h2>
-
-            <p>
-              My interests move between digital and physical worlds. One
-              day I might be working on a website; another day I might be
-              wiring a sensor, experimenting with a robot, or investigating
-              a scientific question.
+        <div class="z2m-content">
+          <div class="z2m-text">
+            <p class="eyebrow">MY LEARNING JOURNEY / Z2M</p>
+            <h2>Learning by<br><span>making things.</span></h2>
+            <p class="z2m-description">
+              I'm currently learning at Zero2Maker, exploring technology
+              through hands-on learning, experimentation and building
+              projects. I'm developing my skills in robotics, electronics,
+              CAD and web development.
             </p>
-
-            <p>
-              I enjoy projects that leave room for experimentation. A
-              working prototype is a starting point: the next steps are
-              to test it, understand its limitations, and improve it.
-            </p>
-
-            <h3>What I'm exploring</h3>
-
-            <div class="skill-cloud">
-              <span>HTML / CSS / JavaScript</span>
-              <span>Python & computing</span>
-              <span>AI concepts</span>
-              <span>Arduino & ESP32</span>
-              <span>Sensors & electronics</span>
-              <span>CAD & 3D printing</span>
-              <span>Robotics</span>
-              <span>Scientific research</span>
-              <span>Public speaking</span>
-              <span>Teamwork</span>
-            </div>
-
-            <h3>What matters to me</h3>
-
-            <ul class="values-list">
-              <li><span>01</span>Stay curious, especially when something doesn't work.</li>
-              <li><span>02</span>Build useful things instead of stopping at ideas.</li>
-              <li><span>03</span>Share what I learn and grow with other people.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- EMAIL-ONLY CONTACT SECTION -->
-        <div class="contact-panel">
-          <div>
-            <p class="eyebrow">HAVE AN IDEA?</p>
-
-            <h2>
-              Let's make something<br>
-              <span class="accent-text">worth exploring.</span>
-            </h2>
-
-            <div class="contact-details">
-              <a href="mailto:exp.hrk@gmail.com">
-                <span class="contact-label">EMAIL</span>
-                <span>exp.hrk@gmail.com ↗</span>
-              </a>
-            </div>
+            <a
+              class="button button-primary z2m-button"
+              href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore my Zero2Maker website <span>↗</span>
+            </a>
           </div>
 
-          <a class="button button-dark" href="mailto:exp.hrk@gmail.com">
-            Say hello ↗
+          <a
+            class="z2m-visual"
+            href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open my Zero2Maker learning website"
+          >
+            <div class="z2m-grid"></div>
+            <div class="z2m-circle"></div>
+            <span class="z2m-number">Z2M</span>
+            <span class="z2m-index">LEARN / BUILD / EXPLORE</span>
+            <span class="z2m-open">OPEN WEBSITE ↗</span>
           </a>
         </div>
       </section>
 
-    </main>
+      <div class="about-contact">
+        <p class="eyebrow">HAVE AN IDEA?</p>
+        <h2>Let's make something <span>interesting.</span></h2>
+        <a class="button button-primary" href="mailto:exp.hrk@gmail.com">
+          Get in touch ↗
+        </a>
+      </div>
+    </section>
 
-    <footer class="footer">
-      <a href="#home" class="footer-mark">HK.</a>
-      <p>Made with curiosity, code, and a willingness to experiment.</p>
-      <span>© <span id="year"></span> HARSHIL KACHALIA</span>
-    </footer>
+  </main>
 
-  </div>
+  <footer class="site-footer">
+    <a class="brand" href="#home" data-go="home">HK<span>.</span></a>
+    <p>Made with curiosity by Harshil Kachalia.</p>
+    <a href="mailto:exp.hrk@gmail.com">EMAIL ↗</a>
+  </footer>
+
 </body>
 </html>
