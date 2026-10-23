@@ -1,504 +1,355 @@
 
-const projects = [
-  {
-    id: "plant-whisperer",
-    title: "Plant Whisperer",
-    category: "Science",
-    type: "Research concept",
-    symbol: "∿",
-    summary: "Exploring whether plant electrical signals can help identify early water stress.",
-    context: "A science project developed around investigating plant responses to different water conditions.",
-    approach: "The concept uses electrodes to observe electrical potential changes in plants. Measurements from different water conditions can be compared to investigate possible patterns.",
-    learning: "Plant signals can be subtle and variable. Reliable conclusions require careful controls, repeated measurements, consistent electrode placement, and evidence before making claims.",
-    next: "Improve measurement consistency, collect additional readings, document experimental conditions, and evaluate whether observed patterns repeat.",
-    tags: ["Plant science", "Electronics", "Research"],
-    featured: true
-  },
-  {
-    id: "robotic-dog",
-    title: "Robotic Dog",
-    category: "Robotics",
-    type: "Hardware prototype",
-    symbol: "⌘",
-    summary: "Exploring a four-legged robot using servo motors and distance sensing.",
-    context: "A hands-on robotics build focused on learning how mechanical movement and sensors can work together.",
-    approach: "The concept uses four servo-driven legs and an ultrasonic distance sensor. The control logic can respond to nearby obstacles, while servo angles determine the robot's posture and movement.",
-    learning: "A robot needs more than code: mechanical geometry, stable mounting, power delivery, servo limits, and calibration all affect the result.",
-    next: "Improve gait coordination, test the frame's stability, calibrate each servo, and make obstacle responses more reliable.",
-    tags: ["Servos", "Ultrasonic sensor", "Robotics"],
-    featured: true
-  },
-  {
-    id: "gesture-control",
-    title: "AI Gesture Control",
-    category: "AI & Software",
-    type: "Web experiment",
-    symbol: "◎",
-    summary: "Experimenting with camera-based hand gestures as a way to control a website.",
-    context: "An interactive software concept using browser-based computer vision.",
-    approach: "The project explores MediaPipe Hands and webcam input to detect hand landmarks and map selected gestures to actions such as cursor movement and scrolling.",
-    learning: "Real-time interaction depends on lighting, camera position, detection confidence, and smoothing. Gesture recognition also needs clear rules to avoid accidental actions.",
-    next: "Improve gesture stability, add accessible alternatives, and test how well the controls work under different lighting conditions.",
-    tags: ["JavaScript", "MediaPipe", "Computer vision"],
-    featured: true
-  },
-  {
-    id: "lifelink",
-    title: "LifeLink",
-    category: "Robotics",
-    type: "Care technology concept",
-    symbol: "⌁",
-    summary: "A senior-care station concept combining medication reminders, activity prompts, and an SOS idea.",
-    context: "A prototype concept developed around everyday support for older adults and their families.",
-    approach: "The proposed station brings together scheduled medicine prompts, reminders, simple engagement features, and an emergency-alert concept. Each feature needs separate usability and safety testing.",
-    learning: "Care technology must be understandable, dependable, respectful of privacy, and designed around the person using it. A concept is not the same as a validated medical or safety device.",
-    next: "Build a limited reminder prototype, test its interface with appropriate supervision, and separately evaluate any emergency or medication-handling mechanisms.",
-    tags: ["Assistive technology", "Prototyping", "Human-centred design"],
-    featured: true
-  },
-  {
-    id: "gitclub",
-    title: "GitClub",
-    category: "Community",
-    type: "Student initiative",
-    symbol: "{ }",
-    summary: "A student-led initiative to help peers explore GitHub and collaborative coding.",
-    context: "An idea for creating a welcoming community where students can learn version control and build together.",
-    approach: "The planned experience includes learning activities, collaborative projects, student roles, and a website explaining how to participate.",
-    learning: "A successful community needs more than a website. Clear responsibilities, beginner-friendly activities, consistent communication, and shared projects matter too.",
-    next: "Organise introductory sessions, create a starter repository, and help members contribute to small collaborative projects.",
-    tags: ["GitHub", "Peer learning", "Community"],
-    featured: true
-  },
-  {
-    id: "specwise",
-    title: "SpecWise",
-    category: "AI & Software",
-    type: "Web application concept",
-    symbol: "▦",
-    summary: "A PC capability analyser concept that connects hardware specifications with intended use.",
-    context: "A software idea for making computer specifications easier for students and everyday users to understand.",
-    approach: "The planned interface separates hardware details, capability analysis, and educational explanations so users can better understand what their computer may handle.",
-    learning: "Useful analysis depends on transparent assumptions. A recommendation should explain its limits instead of pretending a single score can describe every workload.",
-    next: "Validate capability rules, add clear explanations, and test recommendations against real hardware configurations.",
-    tags: ["Web development", "PC hardware", "UI design"],
-    featured: false
-  },
-  {
-    id: "swasth-bharat",
-    title: "Swasth Bharat",
-    category: "AI & Software",
-    type: "Health app concept",
-    symbol: "+",
-    summary: "A family wellness concept centred on everyday routines, food, activity, and organisation.",
-    context: "A proposed app experience focused on making family wellness information and daily planning more approachable.",
-    approach: "The concept brings together family-oriented dashboards, food and activity ideas, and task organisation, with a focus on familiar Indian household contexts.",
-    learning: "Wellness software should distinguish general information from medical advice, respect privacy, and make recommendations understandable and practical.",
-    next: "Test a simple prototype, validate content quality, and improve usability before considering any real-world health use.",
-    tags: ["App design", "Wellness", "AI concepts"],
-    featured: false
-  }
-];
+/* =========================================
+   HARSHIL KACHALIA — PORTFOLIO SCRIPT
+========================================= */
 
-const appPages = [
-  "home",
-  "projects",
-  "project-detail",
-  "achievements",
-  "about"
-];
+document.addEventListener("DOMContentLoaded", () => {
+  const pages = document.querySelectorAll("[data-page]");
+  const navLinks = document.querySelectorAll(".nav-link[data-go]");
+  const transitionOverlay = document.querySelector(".transition-wipe");
 
-let activeFilter = "All";
+  let isTransitioning = false;
 
-const navLinks = document.querySelectorAll(".nav-link");
-const menuToggle = document.getElementById("menuToggle");
-const navMenu = document.querySelector(".nav-links");
+  // -----------------------------------------
+  // PROJECT DATA
+  // -----------------------------------------
 
-document.getElementById("year").textContent = new Date().getFullYear();
+  const projects = {
+    "plant-whisperer": {
+      number: "01",
+      category: "SCIENCE · PLANT ELECTRICAL SIGNALS",
+      title: "Plant Whisperer",
+      description:
+        "Plant Whisperer explores whether electrical signals measured from plants can help us study water stress. The project investigates how plant signals may change under different water conditions.",
+      learning: [
+        "Exploring plant electrical signals and ion movement.",
+        "Experimenting with electrodes and signal measurement.",
+        "Comparing observations across different water conditions."
+      ],
+      status: "Science project in development",
+      tools: "Electrodes · Electronics · Scientific observation"
+    },
 
-/* NAVIGATION */
+    "robotic-dog": {
+      number: "02",
+      category: "ROBOTICS · HARDWARE",
+      title: "Robotic Dog",
+      description:
+        "A hands-on robotics project exploring how a quadruped robot can move using servo motors, sensors and a carefully designed body.",
+      learning: [
+        "Understanding servo motor positioning.",
+        "Exploring robot leg movement and balance.",
+        "Learning how sensors can help a robot react to its surroundings."
+      ],
+      status: "Robotics learning project",
+      tools: "Microcontrollers · Servo motors · Sensors · CAD"
+    },
 
-function navigateTo(page, updateHash = true) {
-  if (!appPages.includes(page)) {
-    page = "home";
-  }
+    "ai-gesture-control": {
+      number: "03",
+      category: "AI · COMPUTER VISION",
+      title: "AI Gesture Control",
+      description:
+        "An interactive web experiment that explores using hand gestures as an alternative way to control elements on a website.",
+      learning: [
+        "Exploring hand tracking with MediaPipe.",
+        "Connecting gesture recognition to website interactions.",
+        "Experimenting with browser-based computer vision."
+      ],
+      status: "Web experiment",
+      tools: "JavaScript · MediaPipe · HTML · CSS"
+    },
 
-  document.querySelectorAll(".page").forEach(section => {
-    section.classList.toggle("active", section.id === page);
-  });
+    "lifelink": {
+      number: "04",
+      category: "INNOVATION · ASSISTIVE TECHNOLOGY",
+      title: "LifeLink",
+      description:
+        "LifeLink is a senior-care station concept designed around daily routines, medicine reminders, exercise prompts and ways to request assistance.",
+      learning: [
+        "Identifying everyday challenges in senior care.",
+        "Designing around simple and accessible interactions.",
+        "Exploring how hardware and software could work together."
+      ],
+      status: "Concept and proof-of-concept exploration",
+      tools: "Product design · Electronics · App concepts"
+    },
 
-  navLinks.forEach(link => {
-    const isActive =
-      link.dataset.page === page ||
-      (page === "project-detail" && link.dataset.page === "projects");
+    "gitclub": {
+      number: "05",
+      category: "COMMUNITY · OPEN SOURCE",
+      title: "GitClub",
+      description:
+        "GitClub is a student initiative intended to help students discover GitHub, learn collaboration and explore building projects together.",
+      learning: [
+        "Planning learning activities for students.",
+        "Exploring GitHub and version-control workflows.",
+        "Organising a community around making and sharing."
+      ],
+      status: "Student initiative",
+      tools: "GitHub · Web development · Collaboration"
+    },
 
-    link.classList.toggle("active", isActive);
+    "specwise": {
+      number: "06",
+      category: "WEB DEVELOPMENT · PC HARDWARE",
+      title: "SpecWise",
+      description:
+        "SpecWise is a PC capability analyzer concept designed to help people understand their computer hardware and what it may be suitable for.",
+      learning: [
+        "Organising hardware information into clear categories.",
+        "Designing an interactive interface.",
+        "Exploring how system specifications relate to different tasks."
+      ],
+      status: "Web application project",
+      tools: "React · JavaScript · UI design"
+    },
 
-    if (isActive) {
-      link.setAttribute("aria-current", "page");
-    } else {
-      link.removeAttribute("aria-current");
+    "swasth-bharat": {
+      number: "07",
+      category: "APP CONCEPT · FAMILY WELLNESS",
+      title: "Swasth Bharat",
+      description:
+        "Swasth Bharat is a family wellness app concept focused on everyday nutrition, exercise, routines and practical health-related guidance for Indian families.",
+      learning: [
+        "Designing features for different family members.",
+        "Exploring wellness dashboards and daily routines.",
+        "Thinking about responsible uses of AI in an app."
+      ],
+      status: "App concept and prototype exploration",
+      tools: "UI design · Web technology · AI concepts"
+    },
+
+    "it-rural-quiz": {
+      number: "08",
+      category: "TECHNOLOGY · QUIZ EXPERIENCE",
+      title: "TCS IT Rural Quiz",
+      description:
+        "My TCS IT Rural Quiz journey involved preparing for a technology quiz and exploring topics across information technology, internet safety, computing history and emerging technologies.",
+      learning: [
+        "Revising internet safety and security protocols.",
+        "Learning about technology companies and their founders.",
+        "Exploring artificial intelligence, augmented reality and virtual reality."
+      ],
+      status: "Quiz preparation and participation experience",
+      tools: "Technology knowledge · Research · Quiz preparation"
     }
-  });
+  };
 
-  navMenu.classList.remove("open");
-  menuToggle.setAttribute("aria-expanded", "false");
+  // -----------------------------------------
+  // PAGE NAVIGATION
+  // -----------------------------------------
 
-  if (updateHash) {
-    const hash = page === "project-detail" ? "projects" : page;
-    history.pushState({ page }, "", `#${hash}`);
+  function navigateTo(pageName) {
+    const targetPage = document.querySelector(
+      `[data-page="${pageName}"]`
+    );
+
+    if (!targetPage) {
+      console.warn(`Portfolio page not found: ${pageName}`);
+      return;
+    }
+
+    pages.forEach((page) => {
+      page.classList.toggle("active", page === targetPage);
+    });
+
+    navLinks.forEach((link) => {
+      const isActive = link.dataset.go === pageName;
+      link.classList.toggle("active", isActive);
+
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
+  // -----------------------------------------
+  // PROJECT DETAILS
+  // -----------------------------------------
 
-/* PROJECT CARDS */
+  function renderProjectDetail(projectId) {
+    const project = projects[projectId];
+    const detailContainer = document.querySelector(
+      "#project-detail-content"
+    );
 
-function makeProjectCard(project, index) {
-  return `
-    <article class="project-card">
-      <div class="project-visual">
-        <span class="visual-type">${project.type}</span>
+    if (!project || !detailContainer) {
+      console.warn(`Project not found: ${projectId}`);
+      return;
+    }
 
-        <span class="visual-symbol" aria-hidden="true">
-          ${project.symbol}
-        </span>
+    detailContainer.innerHTML = `
+      <p class="eyebrow">
+        PROJECT ${project.number} / ${project.category}
+      </p>
 
-        <span class="visual-number">
-          PROJECT / ${String(index + 1).padStart(2, "0")}
-        </span>
+      <h1>${project.title}<span>.</span></h1>
+
+      <p class="project-detail-description">
+        ${project.description}
+      </p>
+
+      <div class="project-detail-panel">
+        <p class="eyebrow">WHAT I'M EXPLORING</p>
+        <ul>
+          ${project.learning
+            .map((item) => `<li>${item}</li>`)
+            .join("")}
+        </ul>
       </div>
 
-      <div class="project-card-body">
-        <div class="project-card-meta">
-          <span>${project.category}</span>
-          <span>EXPLORATION</span>
-        </div>
-
-        <h3>${project.title}</h3>
-        <p>${project.summary}</p>
-
-        <button
-          class="card-link"
-          data-project="${project.id}"
-          aria-label="Open project notes for ${project.title}"
-        >
-          Project notes <span>↗</span>
-        </button>
-      </div>
-    </article>
-  `;
-}
-
-function renderFeaturedProjects() {
-  const featured = projects.filter(project => project.featured);
-
-  document.getElementById("featuredProjects").innerHTML =
-    featured
-      .map((project, index) => makeProjectCard(project, index))
-      .join("");
-}
-
-function renderAllProjects() {
-  const filtered = activeFilter === "All"
-    ? projects
-    : projects.filter(project => project.category === activeFilter);
-
-  const container = document.getElementById("allProjects");
-
-  container.innerHTML = filtered.length
-    ? filtered.map((project, index) => makeProjectCard(project, index)).join("")
-    : `<div class="empty-state">No projects in this category yet.</div>`;
-
-  document.querySelectorAll(".filter-button").forEach(button => {
-    const isActive = button.dataset.filter === activeFilter;
-
-    button.classList.toggle("active", isActive);
-    button.setAttribute("aria-pressed", String(isActive));
-  });
-}
-
-/* INDIVIDUAL PROJECT NOTES */
-
-function renderProjectDetail(id) {
-  const project = projects.find(item => item.id === id);
-
-  if (!project) {
-    return;
-  }
-
-  const tags = project.tags
-    .map(tag => `<span class="tag">${tag}</span>`)
-    .join("");
-
-  document.getElementById("projectDetailContent").innerHTML = `
-    <div class="detail-hero">
-      <span class="detail-kicker">
-        ${project.category.toUpperCase()} /
-        ${project.type.toUpperCase()}
-      </span>
-
-      <h1 id="detail-title">
-        ${project.title}<span class="accent-text">.</span>
-      </h1>
-
-      <p>${project.summary}</p>
-
-      <div class="detail-symbol" aria-hidden="true">
-        ${project.symbol}
-      </div>
-
-      <div class="detail-tags">
-        ${tags}
-      </div>
-    </div>
-
-    <div class="detail-columns">
-      <section class="detail-block">
-        <p class="eyebrow">01 / THE IDEA</p>
-        <h2>What I'm exploring</h2>
-        <p>${project.context}</p>
-        <p>${project.approach}</p>
-      </section>
-
-      <section class="detail-block">
-        <p class="eyebrow">02 / THE PROCESS</p>
-        <h2>What I'm learning</h2>
-        <p>${project.learning}</p>
-      </section>
-
-      <section class="detail-block">
-        <p class="eyebrow">03 / NEXT STEPS</p>
-        <h2>Where it could go</h2>
-        <p>${project.next}</p>
-      </section>
-
-      <section class="detail-block">
-        <p class="eyebrow">04 / A NOTE ON PROGRESS</p>
-        <h2>Ideas evolve</h2>
+      <div class="project-detail-meta">
         <p>
-          This page describes the project's concept, approach, learning,
-          and possible next steps. It does not imply that every proposed
-          feature has already been built or tested.
+          <strong>STATUS</strong>
+          <span>${project.status}</span>
         </p>
-      </section>
-    </div>
-  `;
 
-  /*
-   * Re-enter the project detail page to restart its animation
-   * every time a different project is opened.
-   */
-  const detailPage = document.getElementById("project-detail");
+        <p>
+          <strong>TOOLS & TOPICS</strong>
+          <span>${project.tools}</span>
+        </p>
+      </div>
 
-  detailPage.classList.remove("active");
-  void detailPage.offsetWidth;
+      <button class="button button-primary" data-go="projects">
+        ← Back to all projects
+      </button>
+    `;
 
-  navigateTo("project-detail");
-}
-
-/* MAIN NAVIGATION BUTTONS */
-
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
-    navigateTo(link.dataset.page);
-  });
-});
-
-/* MOBILE MENU */
-
-menuToggle.addEventListener("click", () => {
-  const isOpen = navMenu.classList.toggle("open");
-
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-/* PROJECT LINKS AND PAGE SHORTCUTS */
-
-document.addEventListener("click", event => {
-  const goButton = event.target.closest("[data-go]");
-
-  if (goButton) {
-    navigateTo(goButton.dataset.go);
-    return;
+    navigateTo("project-detail");
   }
 
-  const projectButton = event.target.closest("[data-project]");
+  // -----------------------------------------
+  // CLICK HANDLING
+  // This handles navigation AND project cards.
+  // Do not add a second click listener for these.
+  // -----------------------------------------
 
-  if (projectButton) {
-    renderProjectDetail(projectButton.dataset.project);
-  }
-});
+  document.addEventListener("click", (event) => {
+    const goButton = event.target.closest("[data-go]");
 
-/* PROJECT FILTERS */
+    if (goButton) {
+      event.preventDefault();
 
-document.getElementById("projectFilters").addEventListener("click", event => {
-  const filterButton = event.target.closest("[data-filter]");
+      const destination = goButton.dataset.go;
 
-  if (!filterButton) {
-    return;
-  }
+      if (destination === "home" ||
+          destination === "projects" ||
+          destination === "achievements" ||
+          destination === "about") {
+        playTransition(() => navigateTo(destination));
+      } else if (destination === "project-detail") {
+        navigateTo(destination);
+      }
 
-  activeFilter = filterButton.dataset.filter;
-  renderAllProjects();
-});
-
-/* BROWSER BACK AND FORWARD BUTTONS */
-
-window.addEventListener("popstate", () => {
-  const requestedPage = location.hash.replace("#", "") || "home";
-
-  navigateTo(requestedPage, false);
-});
-
-/* INITIALISE THE WEBSITE */
-
-renderFeaturedProjects();
-renderAllProjects();
-
-const initialPage = location.hash.replace("#", "") || "home";
-
-navigateTo(initialPage, false);
-
-/* ========================================
-   CUSTOM CURSOR — TRACKING + HIGHLIGHT
-======================================== */
-
-(() => {
-  const halo = document.querySelector(".cursor-halo");
-  const dot = document.querySelector(".cursor-dot");
-
-  if (!halo || !dot || !window.matchMedia("(pointer: fine)").matches) {
-    return;
-  }
-
-  let mouseX = -100;
-  let mouseY = -100;
-  let haloX = -100;
-  let haloY = -100;
-  let animationFrame = null;
-
-  function moveCursor(event) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-
-    document.body.classList.add("cursor-ready");
-
-    dot.style.transform =
-      `translate3d(${mouseX - 3.5}px, ${mouseY - 3.5}px, 0)`;
-
-    if (!animationFrame) {
-      animationFrame = requestAnimationFrame(animateHalo);
+      return;
     }
-  }
 
-  function animateHalo() {
-    haloX += (mouseX - haloX) * 0.17;
-    haloY += (mouseY - haloY) * 0.17;
+    const projectButton = event.target.closest("[data-project]");
 
-    halo.style.transform =
-      `translate3d(${haloX - 19}px, ${haloY - 19}px, 0)`;
+    if (projectButton) {
+      const projectId = projectButton.dataset.project;
 
-    if (
-      Math.abs(mouseX - haloX) > 0.2 ||
-      Math.abs(mouseY - haloY) > 0.2
-    ) {
-      animationFrame = requestAnimationFrame(animateHalo);
-    } else {
-      animationFrame = null;
-    }
-  }
-
-  document.addEventListener("mousemove", moveCursor);
-
-  document.addEventListener("mouseover", event => {
-    const target = event.target;
-
-    if (
-      target instanceof Element &&
-      target.closest("a, button, .project-card, .interest-card")
-    ) {
-      document.body.classList.add("cursor-hover");
+      playTransition(() => renderProjectDetail(projectId));
     }
   });
 
-  document.addEventListener("mouseout", event => {
-    if (
-      event.target instanceof Element &&
-      event.target.closest("a, button, .project-card, .interest-card") &&
-      (!event.relatedTarget ||
-        !(event.relatedTarget instanceof Element) ||
-        !event.relatedTarget.closest("a, button, .project-card, .interest-card"))
-    ) {
-      document.body.classList.remove("cursor-hover");
+  // -----------------------------------------
+  // PAGE TRANSITION
+  // -----------------------------------------
+
+  function playTransition(callback) {
+    if (isTransitioning || !transitionOverlay) {
+      callback();
+      return;
     }
-  });
 
-  document.addEventListener("mouseleave", () => {
-    document.body.classList.remove("cursor-ready");
-  });
+    isTransitioning = true;
 
-  document.addEventListener("mouseenter", () => {
-    document.body.classList.add("cursor-ready");
-  });
-})();
-
-/* ========================================
-   PAGE TRANSITION — PROJECT NOTES
-======================================== */
-
-const transitionOverlay = document.querySelector(".transition-wipe");
-
-function playProjectTransition(callback) {
-  if (!transitionOverlay) {
-    callback();
-    return;
-  }
-
-  transitionOverlay.classList.remove("play");
-
-  // Force a reflow so the animation restarts on every click.
-  void transitionOverlay.offsetWidth;
-
-  transitionOverlay.classList.add("play");
-
-  // Change the page while the orange overlay covers it.
-  window.setTimeout(callback, 300);
-
-  window.setTimeout(() => {
     transitionOverlay.classList.remove("play");
-  }, 950);
-}
 
-/*
-  Replace the existing project-button click handler inside
-  your document.addEventListener("click", ...) with this
-  project-button section.
-*/
+    // Restart the CSS animation.
+    void transitionOverlay.offsetWidth;
 
-/*
-  Find this existing code:
+    transitionOverlay.classList.add("play");
 
-  const projectButton = event.target.closest("[data-project]");
+    window.setTimeout(() => {
+      callback();
+    }, 300);
 
-  if (projectButton) {
-    renderProjectDetail(projectButton.dataset.project);
+    window.setTimeout(() => {
+      transitionOverlay.classList.remove("play");
+      isTransitioning = false;
+    }, 950);
   }
 
-  Replace it with the following:
-*/
+  // -----------------------------------------
+  // CUSTOM CURSOR
+  // -----------------------------------------
 
-document.addEventListener("click", event => {
-  const projectButton = event.target.closest("[data-project]");
+  const cursorHalo = document.querySelector(".cursor-halo");
+  const cursorDot = document.querySelector(".cursor-dot");
 
-  if (!projectButton) return;
+  const finePointer = window.matchMedia(
+    "(hover: hover) and (pointer: fine)"
+  ).matches;
 
-  const projectId = projectButton.dataset.project;
+  if (finePointer && cursorHalo && cursorDot) {
+    document.addEventListener("mousemove", (event) => {
+      const x = event.clientX;
+      const y = event.clientY;
 
-  playProjectTransition(() => {
-    renderProjectDetail(projectId);
+      cursorHalo.style.left = `${x}px`;
+      cursorHalo.style.top = `${y}px`;
+
+      cursorDot.style.left = `${x}px`;
+      cursorDot.style.top = `${y}px`;
+
+      cursorHalo.classList.add("visible");
+      cursorDot.classList.add("visible");
+    });
+
+    document.addEventListener("mouseout", (event) => {
+      if (!event.relatedTarget) {
+        cursorHalo.classList.remove("visible");
+        cursorDot.classList.remove("visible");
+      }
+    });
+
+    document.addEventListener("mouseover", (event) => {
+      const interactiveElement = event.target.closest(
+        "a, button, .project-card, .z2m-visual"
+      );
+
+      cursorHalo.classList.toggle(
+        "hovering",
+        Boolean(interactiveElement)
+      );
+    });
+  }
+
+  // -----------------------------------------
+  // KEYBOARD SUPPORT
+  // -----------------------------------------
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      navigateTo("projects");
+    }
   });
+
+  // -----------------------------------------
+  // INITIAL PAGE
+  // -----------------------------------------
+
+  navigateTo("home");
+
+  console.log("Portfolio loaded successfully.");
 });
