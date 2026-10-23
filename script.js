@@ -100,25 +100,36 @@ const projects = [
   }
 ];
 
-const appPages = ["home", "projects", "project-detail", "achievements", "about"];
+const appPages = [
+  "home",
+  "projects",
+  "project-detail",
+  "achievements",
+  "about"
+];
+
 let activeFilter = "All";
 
-const app = document.getElementById("app");
 const navLinks = document.querySelectorAll(".nav-link");
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.querySelector(".nav-links");
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+/* NAVIGATION */
+
 function navigateTo(page, updateHash = true) {
-  if (!appPages.includes(page)) page = "home";
+  if (!appPages.includes(page)) {
+    page = "home";
+  }
 
   document.querySelectorAll(".page").forEach(section => {
     section.classList.toggle("active", section.id === page);
   });
 
   navLinks.forEach(link => {
-    const isActive = link.dataset.page === page ||
+    const isActive =
+      link.dataset.page === page ||
       (page === "project-detail" && link.dataset.page === "projects");
 
     link.classList.toggle("active", isActive);
@@ -138,25 +149,43 @@ function navigateTo(page, updateHash = true) {
     history.pushState({ page }, "", `#${hash}`);
   }
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
+
+/* PROJECT CARDS */
 
 function makeProjectCard(project, index) {
   return `
     <article class="project-card">
       <div class="project-visual">
         <span class="visual-type">${project.type}</span>
-        <span class="visual-symbol" aria-hidden="true">${project.symbol}</span>
-        <span class="visual-number">PROJECT / ${String(index + 1).padStart(2, "0")}</span>
+
+        <span class="visual-symbol" aria-hidden="true">
+          ${project.symbol}
+        </span>
+
+        <span class="visual-number">
+          PROJECT / ${String(index + 1).padStart(2, "0")}
+        </span>
       </div>
+
       <div class="project-card-body">
         <div class="project-card-meta">
           <span>${project.category}</span>
           <span>EXPLORATION</span>
         </div>
+
         <h3>${project.title}</h3>
         <p>${project.summary}</p>
-        <button class="card-link" data-project="${project.id}">
+
+        <button
+          class="card-link"
+          data-project="${project.id}"
+          aria-label="Open project notes for ${project.title}"
+        >
           Project notes <span>↗</span>
         </button>
       </div>
@@ -166,8 +195,11 @@ function makeProjectCard(project, index) {
 
 function renderFeaturedProjects() {
   const featured = projects.filter(project => project.featured);
+
   document.getElementById("featuredProjects").innerHTML =
-    featured.map((project, index) => makeProjectCard(project, index)).join("");
+    featured
+      .map((project, index) => makeProjectCard(project, index))
+      .join("");
 }
 
 function renderAllProjects() {
@@ -182,15 +214,21 @@ function renderAllProjects() {
     : `<div class="empty-state">No projects in this category yet.</div>`;
 
   document.querySelectorAll(".filter-button").forEach(button => {
-    const active = button.dataset.filter === activeFilter;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
+    const isActive = button.dataset.filter === activeFilter;
+
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 }
 
+/* INDIVIDUAL PROJECT NOTES */
+
 function renderProjectDetail(id) {
   const project = projects.find(item => item.id === id);
-  if (!project) return;
+
+  if (!project) {
+    return;
+  }
 
   const tags = project.tags
     .map(tag => `<span class="tag">${tag}</span>`)
@@ -198,11 +236,24 @@ function renderProjectDetail(id) {
 
   document.getElementById("projectDetailContent").innerHTML = `
     <div class="detail-hero">
-      <span class="detail-kicker">${project.category.toUpperCase()} / ${project.type.toUpperCase()}</span>
-      <h1 id="detail-title">${project.title}<span class="accent-text">.</span></h1>
+      <span class="detail-kicker">
+        ${project.category.toUpperCase()} /
+        ${project.type.toUpperCase()}
+      </span>
+
+      <h1 id="detail-title">
+        ${project.title}<span class="accent-text">.</span>
+      </h1>
+
       <p>${project.summary}</p>
-      <div class="detail-symbol" aria-hidden="true">${project.symbol}</div>
-      <div class="detail-tags">${tags}</div>
+
+      <div class="detail-symbol" aria-hidden="true">
+        ${project.symbol}
+      </div>
+
+      <div class="detail-tags">
+        ${tags}
+      </div>
     </div>
 
     <div class="detail-columns">
@@ -228,51 +279,86 @@ function renderProjectDetail(id) {
       <section class="detail-block">
         <p class="eyebrow">04 / A NOTE ON PROGRESS</p>
         <h2>Ideas evolve</h2>
-        <p>This page describes the project's concept, approach, learning, and possible next steps. It does not imply that every proposed feature has already been built or tested.</p>
+        <p>
+          This page describes the project's concept, approach, learning,
+          and possible next steps. It does not imply that every proposed
+          feature has already been built or tested.
+        </p>
       </section>
     </div>
   `;
 
+  /*
+   * Re-enter the project detail page to restart its animation
+   * every time a different project is opened.
+   */
+  const detailPage = document.getElementById("project-detail");
+
+  detailPage.classList.remove("active");
+  void detailPage.offsetWidth;
+
   navigateTo("project-detail");
 }
 
+/* MAIN NAVIGATION BUTTONS */
+
 navLinks.forEach(link => {
-  link.addEventListener("click", () => navigateTo(link.dataset.page));
+  link.addEventListener("click", () => {
+    navigateTo(link.dataset.page);
+  });
 });
+
+/* MOBILE MENU */
 
 menuToggle.addEventListener("click", () => {
   const isOpen = navMenu.classList.toggle("open");
+
   menuToggle.setAttribute("aria-expanded", String(isOpen));
 });
 
+/* PROJECT LINKS AND PAGE SHORTCUTS */
+
 document.addEventListener("click", event => {
   const goButton = event.target.closest("[data-go]");
+
   if (goButton) {
     navigateTo(goButton.dataset.go);
     return;
   }
 
   const projectButton = event.target.closest("[data-project]");
+
   if (projectButton) {
     renderProjectDetail(projectButton.dataset.project);
   }
 });
 
+/* PROJECT FILTERS */
+
 document.getElementById("projectFilters").addEventListener("click", event => {
   const filterButton = event.target.closest("[data-filter]");
-  if (!filterButton) return;
+
+  if (!filterButton) {
+    return;
+  }
 
   activeFilter = filterButton.dataset.filter;
   renderAllProjects();
 });
 
+/* BROWSER BACK AND FORWARD BUTTONS */
+
 window.addEventListener("popstate", () => {
   const requestedPage = location.hash.replace("#", "") || "home";
+
   navigateTo(requestedPage, false);
 });
+
+/* INITIALISE THE WEBSITE */
 
 renderFeaturedProjects();
 renderAllProjects();
 
 const initialPage = location.hash.replace("#", "") || "home";
+
 navigateTo(initialPage, false);
