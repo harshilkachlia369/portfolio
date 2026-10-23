@@ -1,18 +1,25 @@
 
-/* =========================================
-   HARSHIL KACHALIA — PORTFOLIO SCRIPT
-========================================= */
-
 document.addEventListener("DOMContentLoaded", () => {
+  "use strict";
+
+  // =========================================
+  // PORTFOLIO SETUP
+  // =========================================
+
   const pages = document.querySelectorAll("[data-page]");
   const navLinks = document.querySelectorAll(".nav-link[data-go]");
   const transitionOverlay = document.querySelector(".transition-wipe");
 
-  let isTransitioning = false;
+  const cursorHalo = document.querySelector(".cursor-halo");
+  const cursorDot = document.querySelector(".cursor-dot");
 
-  // -----------------------------------------
-  // PROJECT DATA
-  // -----------------------------------------
+  let isTransitioning = false;
+  let transitionTimer = null;
+  let transitionEndTimer = null;
+
+  // =========================================
+  // PROJECT INFORMATION
+  // =========================================
 
   const projects = {
     "plant-whisperer": {
@@ -136,9 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // -----------------------------------------
+  // =========================================
   // PAGE NAVIGATION
-  // -----------------------------------------
+  // =========================================
 
   function navigateTo(pageName) {
     const targetPage = document.querySelector(
@@ -146,19 +153,26 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (!targetPage) {
-      console.warn(`Portfolio page not found: ${pageName}`);
-      return;
+      console.warn(
+        `Portfolio page "${pageName}" was not found. Check the data-page attribute in index.html.`
+      );
+      return false;
     }
 
     pages.forEach((page) => {
       page.classList.toggle("active", page === targetPage);
+      page.setAttribute(
+        "aria-hidden",
+        page === targetPage ? "false" : "true"
+      );
     });
 
     navLinks.forEach((link) => {
-      const isActive = link.dataset.go === pageName;
-      link.classList.toggle("active", isActive);
+      const active = link.dataset.go === pageName;
 
-      if (isActive) {
+      link.classList.toggle("active", active);
+
+      if (active) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
@@ -169,11 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
       top: 0,
       behavior: "smooth"
     });
+
+    return true;
   }
 
-  // -----------------------------------------
+  // =========================================
   // PROJECT DETAILS
-  // -----------------------------------------
+  // =========================================
 
   function renderProjectDetail(projectId) {
     const project = projects[projectId];
@@ -181,10 +197,21 @@ document.addEventListener("DOMContentLoaded", () => {
       "#project-detail-content"
     );
 
-    if (!project || !detailContainer) {
-      console.warn(`Project not found: ${projectId}`);
+    if (!project) {
+      console.warn(`Project "${projectId}" was not found.`);
       return;
     }
+
+    if (!detailContainer) {
+      console.error(
+        'Missing #project-detail-content in index.html. Add <div id="project-detail-content"></div> inside the project-detail page.'
+      );
+      return;
+    }
+
+    const learningItems = project.learning
+      .map((item) => `<li>${item}</li>`)
+      .join("");
 
     detailContainer.innerHTML = `
       <p class="eyebrow">
@@ -199,11 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="project-detail-panel">
         <p class="eyebrow">WHAT I'M EXPLORING</p>
-        <ul>
-          ${project.learning
-            .map((item) => `<li>${item}</li>`)
-            .join("")}
-        </ul>
+        <ul>${learningItems}</ul>
       </div>
 
       <div class="project-detail-meta">
@@ -213,12 +236,16 @@ document.addEventListener("DOMContentLoaded", () => {
         </p>
 
         <p>
-          <strong>TOOLS & TOPICS</strong>
+          <strong>TOOLS &amp; TOPICS</strong>
           <span>${project.tools}</span>
         </p>
       </div>
 
-      <button class="button button-primary" data-go="projects">
+      <button
+        type="button"
+        class="button button-primary"
+        data-go="projects"
+      >
         ← Back to all projects
       </button>
     `;
@@ -226,52 +253,23 @@ document.addEventListener("DOMContentLoaded", () => {
     navigateTo("project-detail");
   }
 
-  // -----------------------------------------
-  // CLICK HANDLING
-  // This handles navigation AND project cards.
-  // Do not add a second click listener for these.
-  // -----------------------------------------
-
-  document.addEventListener("click", (event) => {
-    const goButton = event.target.closest("[data-go]");
-
-    if (goButton) {
-      event.preventDefault();
-
-      const destination = goButton.dataset.go;
-
-      if (destination === "home" ||
-          destination === "projects" ||
-          destination === "achievements" ||
-          destination === "about") {
-        playTransition(() => navigateTo(destination));
-      } else if (destination === "project-detail") {
-        navigateTo(destination);
-      }
-
-      return;
-    }
-
-    const projectButton = event.target.closest("[data-project]");
-
-    if (projectButton) {
-      const projectId = projectButton.dataset.project;
-
-      playTransition(() => renderProjectDetail(projectId));
-    }
-  });
-
-  // -----------------------------------------
-  // PAGE TRANSITION
-  // -----------------------------------------
+  // =========================================
+  // TRANSITION EFFECT
+  // =========================================
 
   function playTransition(callback) {
-    if (isTransitioning || !transitionOverlay) {
+    if (typeof callback !== "function") return;
+
+    // Navigation still works if the overlay is absent.
+    if (!transitionOverlay || isTransitioning) {
       callback();
       return;
     }
 
     isTransitioning = true;
+
+    window.clearTimeout(transitionTimer);
+    window.clearTimeout(transitionEndTimer);
 
     transitionOverlay.classList.remove("play");
 
@@ -280,22 +278,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
     transitionOverlay.classList.add("play");
 
-    window.setTimeout(() => {
+    transitionTimer = window.setTimeout(() => {
       callback();
     }, 300);
 
-    window.setTimeout(() => {
+    transitionEndTimer = window.setTimeout(() => {
       transitionOverlay.classList.remove("play");
       isTransitioning = false;
     }, 950);
   }
 
-  // -----------------------------------------
-  // CUSTOM CURSOR
-  // -----------------------------------------
+  // =========================================
+  // NAVIGATION AND PROJECT CLICK HANDLING
+  // =========================================
 
-  const cursorHalo = document.querySelector(".cursor-halo");
-  const cursorDot = document.querySelector(".cursor-dot");
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) return;
+
+    const goButton = target.closest("[data-go]");
+
+    if (goButton) {
+      const destination = goButton.dataset.go;
+
+      const validPages = [
+        "home",
+        "projects",
+        "achievements",
+        "about",
+        "project-detail"
+      ];
+
+      if (!validPages.includes(destination)) return;
+
+      event.preventDefault();
+
+      // A project-detail button can be used to return to Projects.
+      if (destination === "project-detail") {
+        navigateTo(destination);
+      } else {
+        playTransition(() => navigateTo(destination));
+      }
+
+      return;
+    }
+
+    const projectButton = target.closest("[data-project]");
+
+    if (projectButton) {
+      event.preventDefault();
+
+      const projectId = projectButton.dataset.project;
+
+      playTransition(() => renderProjectDetail(projectId));
+    }
+  });
+
+  // =========================================
+  // CUSTOM CURSOR
+  // =========================================
 
   const finePointer = window.matchMedia(
     "(hover: hover) and (pointer: fine)"
@@ -303,14 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (finePointer && cursorHalo && cursorDot) {
     document.addEventListener("mousemove", (event) => {
-      const x = event.clientX;
-      const y = event.clientY;
+      cursorHalo.style.left = `${event.clientX}px`;
+      cursorHalo.style.top = `${event.clientY}px`;
 
-      cursorHalo.style.left = `${x}px`;
-      cursorHalo.style.top = `${y}px`;
-
-      cursorDot.style.left = `${x}px`;
-      cursorDot.style.top = `${y}px`;
+      cursorDot.style.left = `${event.clientX}px`;
+      cursorDot.style.top = `${event.clientY}px`;
 
       cursorHalo.classList.add("visible");
       cursorDot.classList.add("visible");
@@ -324,8 +363,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("mouseover", (event) => {
-      const interactiveElement = event.target.closest(
-        "a, button, .project-card, .z2m-visual"
+      const target = event.target;
+
+      if (!(target instanceof Element)) return;
+
+      const interactiveElement = target.closest(
+        'a, button, [role="button"], .project-card, .z2m-visual'
       );
 
       cursorHalo.classList.toggle(
@@ -335,21 +378,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // -----------------------------------------
+  // =========================================
   // KEYBOARD SUPPORT
-  // -----------------------------------------
+  // =========================================
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      navigateTo("projects");
+      const detailPage = document.querySelector(
+        '[data-page="project-detail"]'
+      );
+
+      if (detailPage && detailPage.classList.contains("active")) {
+        navigateTo("projects");
+      }
     }
   });
 
-  // -----------------------------------------
-  // INITIAL PAGE
-  // -----------------------------------------
+  // =========================================
+  // INITIALISE PORTFOLIO
+  // =========================================
+
+  if (pages.length === 0) {
+    console.error(
+      'No elements with [data-page] were found. Check your index.html page sections.'
+    );
+    return;
+  }
 
   navigateTo("home");
 
-  console.log("Portfolio loaded successfully.");
+  console.log("Portfolio script loaded successfully.");
 });
