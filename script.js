@@ -3,29 +3,20 @@ document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   // =========================================
-  // ELEMENTS
+  // PORTFOLIO SETUP
   // =========================================
 
-  const pages = [...document.querySelectorAll("[data-page]")];
-  const navLinks = [...document.querySelectorAll(".nav-link[data-go]")];
-
-  const overlay = document.querySelector(".transition-wipe");
-  const transitionText = document.querySelector("#transition-text");
+  const pages = document.querySelectorAll("[data-page]");
+  const navLinks = document.querySelectorAll(".nav-link[data-go]");
+  const transitionOverlay = document.querySelector(".transition-wipe");
+  const transitionTitle = document.querySelector(".transition-title");
 
   const cursorHalo = document.querySelector(".cursor-halo");
   const cursorDot = document.querySelector(".cursor-dot");
 
-  const menuToggle = document.querySelector(".menu-toggle");
-  const mainNav = document.querySelector("#main-nav");
-
   let isTransitioning = false;
   let transitionTimer = null;
   let transitionEndTimer = null;
-  let currentPage = "home";
-
-  // =========================================
-  // TRANSITION MESSAGES
-  // =========================================
 
   const transitionMessages = {
     home: "BACK TO THE BEGINNING",
@@ -60,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "ROBOTICS · HARDWARE",
       title: "Robotic Dog",
       description:
-        "A quadruped robotics project exploring movement using servo motors, sensors and a carefully designed body.",
+        "A hands-on robotics project exploring how a quadruped robot can move using servo motors, sensors and a carefully designed body.",
       learning: [
         "Understanding servo motor positioning.",
         "Exploring robot leg movement and balance.",
@@ -75,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "AI · COMPUTER VISION",
       title: "AI Gesture Control",
       description:
-        "An interactive web experiment exploring hand gestures as an alternative way to control website elements.",
+        "An interactive web experiment that explores using hand gestures as an alternative way to control elements on a website.",
       learning: [
         "Exploring hand tracking with MediaPipe.",
         "Connecting gesture recognition to website interactions.",
@@ -124,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       learning: [
         "Organising hardware information into clear categories.",
         "Designing an interactive interface.",
-        "Exploring how specifications relate to different tasks."
+        "Exploring how system specifications relate to different tasks."
       ],
       status: "Web application project",
       tools: "React · JavaScript · UI design"
@@ -150,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "TECHNOLOGY · QUIZ EXPERIENCE",
       title: "TCS IT Rural Quiz",
       description:
-        "My TCS IT Rural Quiz journey involved preparing for and participating in a technology quiz, exploring IT, internet safety, computing history and emerging technologies.",
+        "My TCS IT Rural Quiz journey involved preparing for a technology quiz and exploring topics across information technology, internet safety, computing history and emerging technologies.",
       learning: [
         "Revising internet safety and security protocols.",
         "Learning about technology companies and their founders.",
@@ -162,54 +153,37 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================================
-  // SAFE PAGE NAVIGATION
+  // PAGE NAVIGATION
   // =========================================
 
-  function closeMobileMenu() {
-    if (mainNav) {
-      mainNav.classList.remove("open");
-    }
-
-    if (menuToggle) {
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "Open navigation");
-    }
-
-    document.body.classList.remove("menu-open");
-  }
-
   function navigateTo(pageName) {
-    const targetPage = pages.find(
-      (page) => page.dataset.page === pageName
+    const targetPage = document.querySelector(
+      `[data-page="${pageName}"]`
     );
 
     if (!targetPage) {
-      console.error(`Portfolio page not found: ${pageName}`);
+      console.warn(`Portfolio page "${pageName}" was not found.`);
       return false;
     }
 
     pages.forEach((page) => {
-      const active = page === targetPage;
+      const isActive = page === targetPage;
 
-      page.classList.toggle("active", active);
-      page.setAttribute("aria-hidden", String(!active));
+      page.classList.toggle("active", isActive);
+      page.setAttribute("aria-hidden", String(!isActive));
     });
 
     navLinks.forEach((link) => {
-      const active = link.dataset.go === pageName;
+      const isActive = link.dataset.go === pageName;
 
-      link.classList.toggle("active", active);
+      link.classList.toggle("active", isActive);
 
-      if (active) {
+      if (isActive) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
       }
     });
-
-    currentPage = pageName;
-
-    closeMobileMenu();
 
     window.scrollTo({
       top: 0,
@@ -220,63 +194,58 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================
-  // TRANSITION ANIMATION
+  // PAGE-SPECIFIC TRANSITION TEXT
   // =========================================
 
-  function playTransition(callback, message) {
+  function setTransitionMessage(pageName) {
+    if (!transitionTitle) return;
+
+    const message =
+      transitionMessages[pageName] || "EXPLORING IDEAS";
+
+    transitionTitle.replaceChildren(
+      document.createTextNode(message)
+    );
+
+    const accent = document.createElement("span");
+    accent.className = "accent-text";
+    accent.textContent = ".";
+    transitionTitle.appendChild(accent);
+  }
+
+  function playTransition(callback, destination = "projects") {
     if (typeof callback !== "function") return;
 
-    if (isTransitioning) return;
-
-    if (!overlay) {
+    if (!transitionOverlay || isTransitioning) {
       callback();
       return;
     }
 
     isTransitioning = true;
+    setTransitionMessage(destination);
 
     window.clearTimeout(transitionTimer);
     window.clearTimeout(transitionEndTimer);
 
-    if (transitionText) {
-      transitionText.textContent =
-        message || "MOVING FORWARD";
-    }
+    transitionOverlay.classList.remove("play");
 
-    overlay.classList.remove("play");
+    // Restart the CSS animation cleanly.
+    void transitionOverlay.offsetWidth;
 
-    // Restart the CSS animation.
-    void overlay.offsetWidth;
+    transitionOverlay.classList.add("play");
 
-    overlay.classList.add("play");
-
-    // Change page while the overlay covers the screen.
     transitionTimer = window.setTimeout(() => {
       callback();
     }, 300);
 
     transitionEndTimer = window.setTimeout(() => {
-      overlay.classList.remove("play");
+      transitionOverlay.classList.remove("play");
       isTransitioning = false;
-    }, 980);
-  }
-
-  function goToPage(pageName) {
-    if (pageName === currentPage) {
-      closeMobileMenu();
-      return;
-    }
-
-    const message =
-      transitionMessages[pageName] || "MOVING FORWARD";
-
-    playTransition(() => {
-      navigateTo(pageName);
-    }, message);
+    }, 950);
   }
 
   // =========================================
-  // PROJECT DETAIL RENDERING
+  // PROJECT DETAILS
   // =========================================
 
   function renderProjectDetail(projectId) {
@@ -285,79 +254,85 @@ document.addEventListener("DOMContentLoaded", () => {
       "#project-detail-content"
     );
 
-    if (!project) {
-      console.error(`Unknown project: ${projectId}`);
+    if (!project || !detailContainer) {
+      console.warn(`Unable to load project: ${projectId}`);
       return;
     }
 
-    if (!detailContainer) {
-      console.error(
-        "Missing #project-detail-content in index.html."
-      );
-      return;
-    }
+    const learningList = document.createElement("ul");
 
-    const learningItems = project.learning
-      .map((item) => `<li>${item}</li>`)
-      .join("");
+    project.learning.forEach((item) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = item;
+      learningList.appendChild(listItem);
+    });
 
-    detailContainer.innerHTML = `
-      <p class="eyebrow">
-        PROJECT ${project.number} / ${project.category}
-      </p>
+    detailContainer.replaceChildren();
 
-      <h1>${project.title}<span>.</span></h1>
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "eyebrow";
+    eyebrow.textContent =
+      `PROJECT ${project.number} / ${project.category}`;
 
-      <p class="project-detail-description">
-        ${project.description}
-      </p>
+    const heading = document.createElement("h1");
+    heading.append(document.createTextNode(project.title));
 
-      <div class="project-detail-panel">
-        <p class="eyebrow">WHAT I'M EXPLORING</p>
-        <ul>${learningItems}</ul>
-      </div>
+    const accent = document.createElement("span");
+    accent.textContent = ".";
+    heading.appendChild(accent);
 
-      <div class="project-detail-meta">
-        <p>
-          <strong>STATUS</strong>
-          <span>${project.status}</span>
-        </p>
-        <p>
-          <strong>TOOLS &amp; TOPICS</strong>
-          <span>${project.tools}</span>
-        </p>
-      </div>
+    const description = document.createElement("p");
+    description.className = "project-detail-description";
+    description.textContent = project.description;
 
-      <button type="button"
-        class="button button-primary"
-        data-go="projects">
-        ← Back to all projects
-      </button>
-    `;
+    const panel = document.createElement("div");
+    panel.className = "project-detail-panel";
+
+    const panelHeading = document.createElement("p");
+    panelHeading.className = "eyebrow";
+    panelHeading.textContent = "WHAT I'M EXPLORING";
+
+    panel.append(panelHeading, learningList);
+
+    const meta = document.createElement("div");
+    meta.className = "project-detail-meta";
+
+    const status = document.createElement("p");
+    const statusLabel = document.createElement("strong");
+    statusLabel.textContent = "STATUS";
+    const statusValue = document.createElement("span");
+    statusValue.textContent = project.status;
+    status.append(statusLabel, statusValue);
+
+    const tools = document.createElement("p");
+    const toolsLabel = document.createElement("strong");
+    toolsLabel.textContent = "TOOLS & TOPICS";
+    const toolsValue = document.createElement("span");
+    toolsValue.textContent = project.tools;
+    tools.append(toolsLabel, toolsValue);
+
+    meta.append(status, tools);
+
+    const backButton = document.createElement("button");
+    backButton.type = "button";
+    backButton.className = "button button-primary";
+    backButton.dataset.go = "projects";
+    backButton.textContent = "← Back to all projects";
+
+    detailContainer.append(
+      eyebrow,
+      heading,
+      description,
+      panel,
+      meta,
+      backButton
+    );
 
     navigateTo("project-detail");
   }
 
-  function openProject(projectId) {
-    if (!projects[projectId]) {
-      console.error(`Project "${projectId}" does not exist.`);
-      return;
-    }
-
-    if (isTransitioning) return;
-
-    if (currentPage === "project-detail") {
-      renderProjectDetail(projectId);
-      return;
-    }
-
-    playTransition(() => {
-      renderProjectDetail(projectId);
-    }, transitionMessages["project-detail"]);
-  }
-
   // =========================================
-  // ALL NAVIGATION AND PROJECT CLICKS
+  // NAVIGATION AND PROJECT CLICK HANDLING
   // =========================================
 
   document.addEventListener("click", (event) => {
@@ -365,13 +340,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!(target instanceof Element)) return;
 
-    // Navigation links and buttons.
-    const goElement = target.closest("[data-go]");
+    const goButton = target.closest("[data-go]");
 
-    if (goElement) {
-      const destination = goElement.dataset.go;
+    if (goButton) {
+      const destination = goButton.dataset.go;
 
-      const knownPages = [
+      const validPages = [
         "home",
         "projects",
         "achievements",
@@ -379,74 +353,51 @@ document.addEventListener("DOMContentLoaded", () => {
         "project-detail"
       ];
 
-      if (!knownPages.includes(destination)) return;
+      if (!validPages.includes(destination)) return;
 
       event.preventDefault();
 
       if (destination === "project-detail") {
-        if (currentPage !== "project-detail") {
-          goToPage("projects");
-        }
-        return;
+        setTransitionMessage(destination);
+        navigateTo(destination);
+      } else {
+        playTransition(
+          () => navigateTo(destination),
+          destination
+        );
       }
 
-      goToPage(destination);
       return;
     }
 
-    // Project cards and project buttons.
-    const projectElement = target.closest("[data-project]");
+    const projectButton = target.closest("[data-project]");
 
-    if (projectElement) {
+    if (projectButton) {
       event.preventDefault();
-      openProject(projectElement.dataset.project);
+
+      const projectId = projectButton.dataset.project;
+
+      if (!projects[projectId]) {
+        console.warn(`Project "${projectId}" was not found.`);
+        return;
+      }
+
+      playTransition(
+        () => renderProjectDetail(projectId),
+        "project-detail"
+      );
     }
   });
-
-  // =========================================
-  // MOBILE MENU
-  // =========================================
-
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", () => {
-      const open = menuToggle.getAttribute("aria-expanded") !== "true";
-
-      menuToggle.setAttribute("aria-expanded", String(open));
-      menuToggle.setAttribute(
-        "aria-label",
-        open ? "Close navigation" : "Open navigation"
-      );
-
-      mainNav.classList.toggle("open", open);
-      document.body.classList.toggle("menu-open", open);
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeMobileMenu();
-
-        if (currentPage === "project-detail") {
-          goToPage("projects");
-        }
-      }
-    });
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 680) {
-        closeMobileMenu();
-      }
-    });
-  }
 
   // =========================================
   // CUSTOM CURSOR
   // =========================================
 
-  const supportsFinePointer = window.matchMedia(
+  const finePointer = window.matchMedia(
     "(hover: hover) and (pointer: fine)"
   ).matches;
 
-  if (supportsFinePointer && cursorHalo && cursorDot) {
+  if (finePointer && cursorHalo && cursorDot) {
     document.addEventListener("mousemove", (event) => {
       cursorHalo.style.left = `${event.clientX}px`;
       cursorHalo.style.top = `${event.clientY}px`;
@@ -466,31 +417,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("mouseover", (event) => {
-      if (!(event.target instanceof Element)) return;
+      const target = event.target;
 
-      const interactive = event.target.closest(
-        "a, button, .project-card"
+      if (!(target instanceof Element)) return;
+
+      const interactiveElement = target.closest(
+        'a, button, [role="button"], .project-card, .z2m-visual'
       );
 
       cursorHalo.classList.toggle(
         "hovering",
-        Boolean(interactive)
+        Boolean(interactiveElement)
       );
     });
   }
 
   // =========================================
-  // START PORTFOLIO
+  // KEYBOARD SUPPORT
   // =========================================
 
-  if (!pages.length) {
-    console.error(
-      "No [data-page] sections found. Check index.html."
-    );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      const detailPage = document.querySelector(
+        '[data-page="project-detail"]'
+      );
+
+      if (detailPage?.classList.contains("active")) {
+        playTransition(
+          () => navigateTo("projects"),
+          "projects"
+        );
+      }
+    }
+  });
+
+  // =========================================
+  // INITIALISE PORTFOLIO
+  // =========================================
+
+  if (pages.length === 0) {
+    console.error("No elements with [data-page] were found.");
     return;
   }
 
   navigateTo("home");
+  setTransitionMessage("home");
 
-  console.log("Portfolio initialized successfully.");
+  console.log("Portfolio script loaded successfully.");
 });
