@@ -3,19 +3,37 @@ document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   // =========================================
-  // PORTFOLIO SETUP
+  // ELEMENTS
   // =========================================
 
-  const pages = document.querySelectorAll("[data-page]");
-  const navLinks = document.querySelectorAll(".nav-link[data-go]");
-  const transitionOverlay = document.querySelector(".transition-wipe");
+  const pages = [...document.querySelectorAll("[data-page]")];
+  const navLinks = [...document.querySelectorAll(".nav-link[data-go]")];
+
+  const overlay = document.querySelector(".transition-wipe");
+  const transitionText = document.querySelector("#transition-text");
 
   const cursorHalo = document.querySelector(".cursor-halo");
   const cursorDot = document.querySelector(".cursor-dot");
 
+  const menuToggle = document.querySelector(".menu-toggle");
+  const mainNav = document.querySelector("#main-nav");
+
   let isTransitioning = false;
   let transitionTimer = null;
   let transitionEndTimer = null;
+  let currentPage = "home";
+
+  // =========================================
+  // TRANSITION MESSAGES
+  // =========================================
+
+  const transitionMessages = {
+    home: "BACK TO THE BEGINNING",
+    projects: "ENTERING THE WORKSHOP",
+    achievements: "MILESTONES UNLOCKED",
+    about: "THE PERSON BEHIND THE PROJECTS",
+    "project-detail": "EXPLORING IDEAS"
+  };
 
   // =========================================
   // PROJECT INFORMATION
@@ -42,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "ROBOTICS · HARDWARE",
       title: "Robotic Dog",
       description:
-        "A hands-on robotics project exploring how a quadruped robot can move using servo motors, sensors and a carefully designed body.",
+        "A quadruped robotics project exploring movement using servo motors, sensors and a carefully designed body.",
       learning: [
         "Understanding servo motor positioning.",
         "Exploring robot leg movement and balance.",
@@ -57,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "AI · COMPUTER VISION",
       title: "AI Gesture Control",
       description:
-        "An interactive web experiment that explores using hand gestures as an alternative way to control elements on a website.",
+        "An interactive web experiment exploring hand gestures as an alternative way to control website elements.",
       learning: [
         "Exploring hand tracking with MediaPipe.",
         "Connecting gesture recognition to website interactions.",
@@ -106,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       learning: [
         "Organising hardware information into clear categories.",
         "Designing an interactive interface.",
-        "Exploring how system specifications relate to different tasks."
+        "Exploring how specifications relate to different tasks."
       ],
       status: "Web application project",
       tools: "React · JavaScript · UI design"
@@ -132,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       category: "TECHNOLOGY · QUIZ EXPERIENCE",
       title: "TCS IT Rural Quiz",
       description:
-        "My TCS IT Rural Quiz journey involved preparing for a technology quiz and exploring topics across information technology, internet safety, computing history and emerging technologies.",
+        "My TCS IT Rural Quiz journey involved preparing for and participating in a technology quiz, exploring IT, internet safety, computing history and emerging technologies.",
       learning: [
         "Revising internet safety and security protocols.",
         "Learning about technology companies and their founders.",
@@ -144,27 +162,37 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================================
-  // PAGE NAVIGATION
+  // SAFE PAGE NAVIGATION
   // =========================================
 
+  function closeMobileMenu() {
+    if (mainNav) {
+      mainNav.classList.remove("open");
+    }
+
+    if (menuToggle) {
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open navigation");
+    }
+
+    document.body.classList.remove("menu-open");
+  }
+
   function navigateTo(pageName) {
-    const targetPage = document.querySelector(
-      `[data-page="${pageName}"]`
+    const targetPage = pages.find(
+      (page) => page.dataset.page === pageName
     );
 
     if (!targetPage) {
-      console.warn(
-        `Portfolio page "${pageName}" was not found. Check the data-page attribute in index.html.`
-      );
+      console.error(`Portfolio page not found: ${pageName}`);
       return false;
     }
 
     pages.forEach((page) => {
-      page.classList.toggle("active", page === targetPage);
-      page.setAttribute(
-        "aria-hidden",
-        page === targetPage ? "false" : "true"
-      );
+      const active = page === targetPage;
+
+      page.classList.toggle("active", active);
+      page.setAttribute("aria-hidden", String(!active));
     });
 
     navLinks.forEach((link) => {
@@ -179,16 +207,76 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    currentPage = pageName;
+
+    closeMobileMenu();
+
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "auto"
     });
 
     return true;
   }
 
   // =========================================
-  // PROJECT DETAILS
+  // TRANSITION ANIMATION
+  // =========================================
+
+  function playTransition(callback, message) {
+    if (typeof callback !== "function") return;
+
+    if (isTransitioning) return;
+
+    if (!overlay) {
+      callback();
+      return;
+    }
+
+    isTransitioning = true;
+
+    window.clearTimeout(transitionTimer);
+    window.clearTimeout(transitionEndTimer);
+
+    if (transitionText) {
+      transitionText.textContent =
+        message || "MOVING FORWARD";
+    }
+
+    overlay.classList.remove("play");
+
+    // Restart the CSS animation.
+    void overlay.offsetWidth;
+
+    overlay.classList.add("play");
+
+    // Change page while the overlay covers the screen.
+    transitionTimer = window.setTimeout(() => {
+      callback();
+    }, 300);
+
+    transitionEndTimer = window.setTimeout(() => {
+      overlay.classList.remove("play");
+      isTransitioning = false;
+    }, 980);
+  }
+
+  function goToPage(pageName) {
+    if (pageName === currentPage) {
+      closeMobileMenu();
+      return;
+    }
+
+    const message =
+      transitionMessages[pageName] || "MOVING FORWARD";
+
+    playTransition(() => {
+      navigateTo(pageName);
+    }, message);
+  }
+
+  // =========================================
+  // PROJECT DETAIL RENDERING
   // =========================================
 
   function renderProjectDetail(projectId) {
@@ -198,13 +286,13 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (!project) {
-      console.warn(`Project "${projectId}" was not found.`);
+      console.error(`Unknown project: ${projectId}`);
       return;
     }
 
     if (!detailContainer) {
       console.error(
-        'Missing #project-detail-content in index.html. Add <div id="project-detail-content"></div> inside the project-detail page.'
+        "Missing #project-detail-content in index.html."
       );
       return;
     }
@@ -234,18 +322,15 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>STATUS</strong>
           <span>${project.status}</span>
         </p>
-
         <p>
           <strong>TOOLS &amp; TOPICS</strong>
           <span>${project.tools}</span>
         </p>
       </div>
 
-      <button
-        type="button"
+      <button type="button"
         class="button button-primary"
-        data-go="projects"
-      >
+        data-go="projects">
         ← Back to all projects
       </button>
     `;
@@ -253,43 +338,26 @@ document.addEventListener("DOMContentLoaded", () => {
     navigateTo("project-detail");
   }
 
-  // =========================================
-  // TRANSITION EFFECT
-  // =========================================
-
-  function playTransition(callback) {
-    if (typeof callback !== "function") return;
-
-    // Navigation still works if the overlay is absent.
-    if (!transitionOverlay || isTransitioning) {
-      callback();
+  function openProject(projectId) {
+    if (!projects[projectId]) {
+      console.error(`Project "${projectId}" does not exist.`);
       return;
     }
 
-    isTransitioning = true;
+    if (isTransitioning) return;
 
-    window.clearTimeout(transitionTimer);
-    window.clearTimeout(transitionEndTimer);
+    if (currentPage === "project-detail") {
+      renderProjectDetail(projectId);
+      return;
+    }
 
-    transitionOverlay.classList.remove("play");
-
-    // Restart the CSS animation.
-    void transitionOverlay.offsetWidth;
-
-    transitionOverlay.classList.add("play");
-
-    transitionTimer = window.setTimeout(() => {
-      callback();
-    }, 300);
-
-    transitionEndTimer = window.setTimeout(() => {
-      transitionOverlay.classList.remove("play");
-      isTransitioning = false;
-    }, 950);
+    playTransition(() => {
+      renderProjectDetail(projectId);
+    }, transitionMessages["project-detail"]);
   }
 
   // =========================================
-  // NAVIGATION AND PROJECT CLICK HANDLING
+  // ALL NAVIGATION AND PROJECT CLICKS
   // =========================================
 
   document.addEventListener("click", (event) => {
@@ -297,12 +365,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!(target instanceof Element)) return;
 
-    const goButton = target.closest("[data-go]");
+    // Navigation links and buttons.
+    const goElement = target.closest("[data-go]");
 
-    if (goButton) {
-      const destination = goButton.dataset.go;
+    if (goElement) {
+      const destination = goElement.dataset.go;
 
-      const validPages = [
+      const knownPages = [
         "home",
         "projects",
         "achievements",
@@ -310,40 +379,74 @@ document.addEventListener("DOMContentLoaded", () => {
         "project-detail"
       ];
 
-      if (!validPages.includes(destination)) return;
+      if (!knownPages.includes(destination)) return;
 
       event.preventDefault();
 
-      // A project-detail button can be used to return to Projects.
       if (destination === "project-detail") {
-        navigateTo(destination);
-      } else {
-        playTransition(() => navigateTo(destination));
+        if (currentPage !== "project-detail") {
+          goToPage("projects");
+        }
+        return;
       }
 
+      goToPage(destination);
       return;
     }
 
-    const projectButton = target.closest("[data-project]");
+    // Project cards and project buttons.
+    const projectElement = target.closest("[data-project]");
 
-    if (projectButton) {
+    if (projectElement) {
       event.preventDefault();
-
-      const projectId = projectButton.dataset.project;
-
-      playTransition(() => renderProjectDetail(projectId));
+      openProject(projectElement.dataset.project);
     }
   });
+
+  // =========================================
+  // MOBILE MENU
+  // =========================================
+
+  if (menuToggle && mainNav) {
+    menuToggle.addEventListener("click", () => {
+      const open = menuToggle.getAttribute("aria-expanded") !== "true";
+
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute(
+        "aria-label",
+        open ? "Close navigation" : "Open navigation"
+      );
+
+      mainNav.classList.toggle("open", open);
+      document.body.classList.toggle("menu-open", open);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeMobileMenu();
+
+        if (currentPage === "project-detail") {
+          goToPage("projects");
+        }
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 680) {
+        closeMobileMenu();
+      }
+    });
+  }
 
   // =========================================
   // CUSTOM CURSOR
   // =========================================
 
-  const finePointer = window.matchMedia(
+  const supportsFinePointer = window.matchMedia(
     "(hover: hover) and (pointer: fine)"
   ).matches;
 
-  if (finePointer && cursorHalo && cursorDot) {
+  if (supportsFinePointer && cursorHalo && cursorDot) {
     document.addEventListener("mousemove", (event) => {
       cursorHalo.style.left = `${event.clientX}px`;
       cursorHalo.style.top = `${event.clientY}px`;
@@ -363,49 +466,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("mouseover", (event) => {
-      const target = event.target;
+      if (!(event.target instanceof Element)) return;
 
-      if (!(target instanceof Element)) return;
-
-      const interactiveElement = target.closest(
-        'a, button, [role="button"], .project-card, .z2m-visual'
+      const interactive = event.target.closest(
+        "a, button, .project-card"
       );
 
       cursorHalo.classList.toggle(
         "hovering",
-        Boolean(interactiveElement)
+        Boolean(interactive)
       );
     });
   }
 
   // =========================================
-  // KEYBOARD SUPPORT
+  // START PORTFOLIO
   // =========================================
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      const detailPage = document.querySelector(
-        '[data-page="project-detail"]'
-      );
-
-      if (detailPage && detailPage.classList.contains("active")) {
-        navigateTo("projects");
-      }
-    }
-  });
-
-  // =========================================
-  // INITIALISE PORTFOLIO
-  // =========================================
-
-  if (pages.length === 0) {
+  if (!pages.length) {
     console.error(
-      'No elements with [data-page] were found. Check your index.html page sections.'
+      "No [data-page] sections found. Check index.html."
     );
     return;
   }
 
   navigateTo("home");
 
-  console.log("Portfolio script loaded successfully.");
+  console.log("Portfolio initialized successfully.");
 });
