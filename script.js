@@ -1,15 +1,12 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  // =========================================
   // PORTFOLIO SETUP
-  // =========================================
 
   const pages = document.querySelectorAll("[data-page]");
   const navLinks = document.querySelectorAll(".nav-link[data-go]");
   const transitionOverlay = document.querySelector(".transition-wipe");
-  const transitionTitle = document.querySelector(".transition-title");
+  const transitionMessage = document.querySelector(".transition-message");
 
   const cursorHalo = document.querySelector(".cursor-halo");
   const cursorDot = document.querySelector(".cursor-dot");
@@ -26,9 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "project-detail": "EXPLORING IDEAS"
   };
 
-  // =========================================
   // PROJECT INFORMATION
-  // =========================================
 
   const projects = {
     "plant-whisperer": {
@@ -152,9 +147,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // =========================================
+  // TRANSITION LABEL
+
+  function setTransitionMessage(destination) {
+    if (!transitionMessage) return;
+
+    const message = transitionMessages[destination] || "EXPLORING IDEAS";
+    const accent = transitionMessage.querySelector(".accent-text");
+
+    // Keep the orange accent dot as a separate element.
+    transitionMessage.textContent = message;
+
+    if (accent) {
+      transitionMessage.appendChild(accent);
+    } else {
+      const dot = document.createElement("span");
+      dot.className = "accent-text";
+      dot.textContent = ".";
+      transitionMessage.appendChild(dot);
+    }
+  }
+
   // PAGE NAVIGATION
-  // =========================================
 
   function navigateTo(pageName) {
     const targetPage = document.querySelector(
@@ -162,23 +176,28 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (!targetPage) {
-      console.warn(`Portfolio page "${pageName}" was not found.`);
+      console.warn(
+        `Portfolio page "${pageName}" was not found. Check the data-page attribute in index.html.`
+      );
       return false;
     }
 
     pages.forEach((page) => {
       const isActive = page === targetPage;
-
       page.classList.toggle("active", isActive);
-      page.setAttribute("aria-hidden", String(!isActive));
+      page.setAttribute("aria-hidden", isActive ? "false" : "true");
     });
 
+    // Keep Projects highlighted while a project's notes are open.
+    const activeNavPage =
+      pageName === "project-detail" ? "projects" : pageName;
+
     navLinks.forEach((link) => {
-      const isActive = link.dataset.go === pageName;
+      const active = link.dataset.go === activeNavPage;
 
-      link.classList.toggle("active", isActive);
+      link.classList.toggle("active", active);
 
-      if (isActive) {
+      if (active) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
@@ -187,49 +206,97 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.scrollTo({
       top: 0,
-      behavior: "auto"
+      behavior: "smooth"
     });
 
     return true;
   }
 
-  // =========================================
-  // PAGE-SPECIFIC TRANSITION TEXT
-  // =========================================
+  // PROJECT DETAILS
 
-  function setTransitionMessage(pageName) {
-    if (!transitionTitle) return;
-
-    const message =
-      transitionMessages[pageName] || "EXPLORING IDEAS";
-
-    transitionTitle.replaceChildren(
-      document.createTextNode(message)
+  function renderProjectDetail(projectId) {
+    const project = projects[projectId];
+    const detailContainer = document.querySelector(
+      "#project-detail-content"
     );
 
-    const accent = document.createElement("span");
-    accent.className = "accent-text";
-    accent.textContent = ".";
-    transitionTitle.appendChild(accent);
+    if (!project) {
+      console.warn(`Project "${projectId}" was not found.`);
+      return;
+    }
+
+    if (!detailContainer) {
+      console.error(
+        'Missing #project-detail-content in index.html.'
+      );
+      return;
+    }
+
+    const learningItems = project.learning
+      .map((item) => `<li>${item}</li>`)
+      .join("");
+
+    detailContainer.innerHTML = `
+      <p class="eyebrow">
+        PROJECT ${project.number} / ${project.category}
+      </p>
+
+      <h1>${project.title}<span>.</span></h1>
+
+      <p class="project-detail-description">
+        ${project.description}
+      </p>
+
+      <div class="project-detail-panel">
+        <p class="eyebrow">WHAT I'M EXPLORING</p>
+        <ul>${learningItems}</ul>
+      </div>
+
+      <div class="project-detail-meta">
+        <p>
+          <strong>PROJECT STATUS</strong>
+          <span>${project.status}</span>
+        </p>
+
+        <p>
+          <strong>TOOLS &amp; TOPICS</strong>
+          <span>${project.tools}</span>
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="button button-primary project-detail-back"
+        data-go="projects"
+      >
+        ← Back to all projects
+      </button>
+    `;
+
+    navigateTo("project-detail");
   }
+
+  // TRANSITION EFFECT
 
   function playTransition(callback, destination = "projects") {
     if (typeof callback !== "function") return;
 
+    setTransitionMessage(destination);
+
+    // Navigation still works if the overlay is missing.
     if (!transitionOverlay || isTransitioning) {
       callback();
       return;
     }
 
     isTransitioning = true;
-    setTransitionMessage(destination);
 
     window.clearTimeout(transitionTimer);
     window.clearTimeout(transitionEndTimer);
 
     transitionOverlay.classList.remove("play");
 
-    // Restart the CSS animation cleanly.
+    // Restart the CSS animation.
     void transitionOverlay.offsetWidth;
 
     transitionOverlay.classList.add("play");
@@ -244,101 +311,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 950);
   }
 
-  // =========================================
-  // PROJECT DETAILS
-  // =========================================
-
-  function renderProjectDetail(projectId) {
-    const project = projects[projectId];
-    const detailContainer = document.querySelector(
-      "#project-detail-content"
-    );
-
-    if (!project || !detailContainer) {
-      console.warn(`Unable to load project: ${projectId}`);
-      return;
-    }
-
-    const learningList = document.createElement("ul");
-
-    project.learning.forEach((item) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = item;
-      learningList.appendChild(listItem);
-    });
-
-    detailContainer.replaceChildren();
-
-    const eyebrow = document.createElement("p");
-    eyebrow.className = "eyebrow";
-    eyebrow.textContent =
-      `PROJECT ${project.number} / ${project.category}`;
-
-    const heading = document.createElement("h1");
-    heading.append(document.createTextNode(project.title));
-
-    const accent = document.createElement("span");
-    accent.textContent = ".";
-    heading.appendChild(accent);
-
-    const description = document.createElement("p");
-    description.className = "project-detail-description";
-    description.textContent = project.description;
-
-    const panel = document.createElement("div");
-    panel.className = "project-detail-panel";
-
-    const panelHeading = document.createElement("p");
-    panelHeading.className = "eyebrow";
-    panelHeading.textContent = "WHAT I'M EXPLORING";
-
-    panel.append(panelHeading, learningList);
-
-    const meta = document.createElement("div");
-    meta.className = "project-detail-meta";
-
-    const status = document.createElement("p");
-    const statusLabel = document.createElement("strong");
-    statusLabel.textContent = "STATUS";
-    const statusValue = document.createElement("span");
-    statusValue.textContent = project.status;
-    status.append(statusLabel, statusValue);
-
-    const tools = document.createElement("p");
-    const toolsLabel = document.createElement("strong");
-    toolsLabel.textContent = "TOOLS & TOPICS";
-    const toolsValue = document.createElement("span");
-    toolsValue.textContent = project.tools;
-    tools.append(toolsLabel, toolsValue);
-
-    meta.append(status, tools);
-
-    const backButton = document.createElement("button");
-    backButton.type = "button";
-    backButton.className = "button button-primary";
-    backButton.dataset.go = "projects";
-    backButton.textContent = "← Back to all projects";
-
-    detailContainer.append(
-      eyebrow,
-      heading,
-      description,
-      panel,
-      meta,
-      backButton
-    );
-
-    navigateTo("project-detail");
-  }
-
-  // =========================================
   // NAVIGATION AND PROJECT CLICK HANDLING
-  // =========================================
 
   document.addEventListener("click", (event) => {
     const target = event.target;
 
     if (!(target instanceof Element)) return;
+
+    const projectButton = target.closest("[data-project]");
+
+    if (projectButton) {
+      event.preventDefault();
+
+      const projectId = projectButton.dataset.project;
+
+      playTransition(
+        () => renderProjectDetail(projectId),
+        "project-detail"
+      );
+
+      return;
+    }
 
     const goButton = target.closest("[data-go]");
 
@@ -357,41 +350,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       event.preventDefault();
 
-      if (destination === "project-detail") {
-        setTransitionMessage(destination);
-        navigateTo(destination);
-      } else {
-        playTransition(
-          () => navigateTo(destination),
-          destination
-        );
-      }
-
-      return;
-    }
-
-    const projectButton = target.closest("[data-project]");
-
-    if (projectButton) {
-      event.preventDefault();
-
-      const projectId = projectButton.dataset.project;
-
-      if (!projects[projectId]) {
-        console.warn(`Project "${projectId}" was not found.`);
-        return;
-      }
-
       playTransition(
-        () => renderProjectDetail(projectId),
-        "project-detail"
+        () => navigateTo(destination),
+        destination
       );
     }
   });
 
-  // =========================================
   // CUSTOM CURSOR
-  // =========================================
 
   const finePointer = window.matchMedia(
     "(hover: hover) and (pointer: fine)"
@@ -432,36 +398,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =========================================
   // KEYBOARD SUPPORT
-  // =========================================
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      const detailPage = document.querySelector(
-        '[data-page="project-detail"]'
-      );
+    if (event.key !== "Escape") return;
 
-      if (detailPage?.classList.contains("active")) {
-        playTransition(
-          () => navigateTo("projects"),
-          "projects"
-        );
-      }
+    const detailPage = document.querySelector(
+      '[data-page="project-detail"]'
+    );
+
+    if (detailPage && detailPage.classList.contains("active")) {
+      playTransition(
+        () => navigateTo("projects"),
+        "projects"
+      );
     }
   });
 
-  // =========================================
   // INITIALISE PORTFOLIO
-  // =========================================
 
   if (pages.length === 0) {
-    console.error("No elements with [data-page] were found.");
+    console.error(
+      "No elements with [data-page] were found. Check index.html."
+    );
     return;
   }
 
   navigateTo("home");
-  setTransitionMessage("home");
 
   console.log("Portfolio script loaded successfully.");
 });
