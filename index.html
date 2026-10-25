@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,19 +10,12 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-
   <div class="site-background" aria-hidden="true"></div>
   <div class="cursor-halo" aria-hidden="true"></div>
   <div class="cursor-dot" aria-hidden="true"></div>
 
   <div class="transition-wipe" aria-hidden="true">
-    <div class="transition-content">
-      <span class="transition-index">HK. / PORTFOLIO</span>
-      <span class="transition-title">
-        EXPLORING IDEAS<span class="accent-text">.</span>
-      </span>
-      <span class="transition-caption">THINK / BUILD / IMPROVE</span>
-    </div>
+    <span class="transition-message">EXPLORING IDEAS<span class="accent-text">.</span></span>
   </div>
 
   <header class="site-header">
@@ -42,7 +34,6 @@
   </header>
 
   <main class="site-main">
-
     <!-- HOME -->
     <section class="page active" data-page="home" id="home">
       <div class="hero">
@@ -82,80 +73,53 @@
       </div>
 
       <!-- BUILDING PROCESS -->
-      <section class="building-process">
+      <section class="build-process">
         <div class="section-heading">
           <div>
             <p class="eyebrow">THE WAY I WORK / 001</p>
-            <h2>From curiosity<br>to <span>creation.</span></h2>
+            <h2>From curious question<br>to <span>working idea.</span></h2>
           </div>
-          <span class="process-note">MY BUILDING PHILOSOPHY</span>
+          <span class="process-index">MY PROCESS ↘</span>
         </div>
 
-        <div class="process-grid">
-          <article class="process-card process-card-main">
-            <div class="process-topline">
-              <span>01 / DISCOVER</span>
-              <span class="process-symbol">↗</span>
-            </div>
-            <div class="process-graphic graphic-discover">
-              <span class="graphic-ring ring-a"></span>
-              <span class="graphic-ring ring-b"></span>
-              <span class="graphic-core">?</span>
-            </div>
+        <p class="build-process-intro">
+          I learn best by exploring a problem, trying things out,
+          building a first version and improving it through testing.
+        </p>
+
+        <div class="build-steps">
+          <article class="build-step">
+            <span class="build-step-number">01</span>
+            <span class="build-step-label">OBSERVE</span>
             <h3>Start with a question.</h3>
-            <p>
-              I explore everyday problems, interesting technologies
-              and ideas that make me curious about how things work.
-            </p>
+            <p>Notice a problem, explore how something works and ask what could be improved.</p>
           </article>
 
-          <article class="process-card">
-            <div class="process-topline">
-              <span>02 / BUILD</span>
-              <span class="process-symbol">↗</span>
-            </div>
-            <div class="process-graphic graphic-build">
-              <span class="build-block block-a"></span>
-              <span class="build-block block-b"></span>
-              <span class="build-block block-c"></span>
-              <span class="build-cross">+</span>
-            </div>
-            <h3>Turn ideas into things.</h3>
-            <p>
-              From code and electronics to robotics and CAD,
-              I learn by creating practical experiments and prototypes.
-            </p>
+          <article class="build-step">
+            <span class="build-step-number">02</span>
+            <span class="build-step-label">EXPERIMENT</span>
+            <h3>Test the possibilities.</h3>
+            <p>Explore ideas, learn the tools and try different approaches before settling on one.</p>
           </article>
 
-          <article class="process-card">
-            <div class="process-topline">
-              <span>03 / IMPROVE</span>
-              <span class="process-symbol">↗</span>
-            </div>
-            <div class="process-graphic graphic-improve">
-              <span class="improve-line line-a"></span>
-              <span class="improve-line line-b"></span>
-              <span class="improve-line line-c"></span>
-              <span class="improve-point"></span>
-            </div>
-            <h3>Test. Learn. Repeat.</h3>
-            <p>
-              I test what I build, learn from what doesn't work
-              and improve my ideas one step at a time.
-            </p>
+          <article class="build-step">
+            <span class="build-step-number">03</span>
+            <span class="build-step-label">BUILD</span>
+            <h3>Make it tangible.</h3>
+            <p>Turn the idea into a prototype, program, design or experiment that can be tested.</p>
+          </article>
+
+          <article class="build-step">
+            <span class="build-step-number">04</span>
+            <span class="build-step-label">IMPROVE</span>
+            <h3>Learn from the result.</h3>
+            <p>Find what works, understand what doesn't and use those lessons to make it better.</p>
           </article>
         </div>
 
-        <div class="process-bottom">
-          <span class="process-bottom-label">THE PROCESS IS NEVER FINISHED</span>
-          <p>
-            Every experiment teaches me something new.
-            Every project is another step forward.
-          </p>
-          <button class="text-link" data-go="projects">
-            Explore my projects ↗
-          </button>
-        </div>
+        <button class="text-link process-project-link" data-go="projects">
+          Explore the projects behind my process ↗
+        </button>
       </section>
 
       <div class="home-cta">
@@ -174,49 +138,119 @@
       </div>
 
       <div class="project-grid">
-        <article class="project-card">
-          <div class="project-art art-plant"><span class="project-number">01 / SCIENCE</span><div class="project-symbol">✳</div><span class="art-bottom-label">SENSE THE INVISIBLE</span></div>
-          <div class="project-card-info"><div><p class="project-category">PLANT SCIENCE</p><h3>Plant Whisperer</h3></div><button class="round-arrow" data-project="plant-whisperer" aria-label="Explore Plant Whisperer">↗</button></div>
+        <article class="project-card" data-project-card="plant-whisperer">
+          <div class="project-art art-plant">
+            <span class="project-number">01 / SCIENCE</span>
+            <div class="project-symbol">✳</div>
+            <span class="art-bottom-label">SENSE THE INVISIBLE</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">PLANT SCIENCE</p><h3>Plant Whisperer</h3></div>
+            <button class="round-arrow" data-project="plant-whisperer" aria-label="View Plant Whisperer project notes">↗</button>
+          </div>
           <p class="project-summary">Exploring plant electrical signals and water-stress detection.</p>
+          <button class="project-notes-link" data-project="plant-whisperer">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-robot"><span class="project-number">02 / ROBOTICS</span><div class="project-symbol">◈</div><span class="art-bottom-label">DESIGNED TO MOVE</span></div>
-          <div class="project-card-info"><div><p class="project-category">HARDWARE</p><h3>Robotic Dog</h3></div><button class="round-arrow" data-project="robotic-dog" aria-label="Explore Robotic Dog">↗</button></div>
+        <article class="project-card" data-project-card="robotic-dog">
+          <div class="project-art art-robot">
+            <span class="project-number">02 / ROBOTICS</span>
+            <div class="project-symbol">◈</div>
+            <span class="art-bottom-label">DESIGNED TO MOVE</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">HARDWARE</p><h3>Robotic Dog</h3></div>
+            <button class="round-arrow" data-project="robotic-dog" aria-label="View Robotic Dog project notes">↗</button>
+          </div>
           <p class="project-summary">Learning about servo control, sensing and robot movement.</p>
+          <button class="project-notes-link" data-project="robotic-dog">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-gesture"><span class="project-number">03 / AI</span><div class="project-symbol">◎</div><span class="art-bottom-label">INTERACTION REIMAGINED</span></div>
-          <div class="project-card-info"><div><p class="project-category">COMPUTER VISION</p><h3>AI Gesture Control</h3></div><button class="round-arrow" data-project="ai-gesture-control" aria-label="Explore AI Gesture Control">↗</button></div>
+        <article class="project-card" data-project-card="ai-gesture-control">
+          <div class="project-art art-gesture">
+            <span class="project-number">03 / AI</span>
+            <div class="project-symbol">◎</div>
+            <span class="art-bottom-label">INTERACTION REIMAGINED</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">COMPUTER VISION</p><h3>AI Gesture Control</h3></div>
+            <button class="round-arrow" data-project="ai-gesture-control" aria-label="View AI Gesture Control project notes">↗</button>
+          </div>
           <p class="project-summary">A browser experiment using hand gestures for interaction.</p>
+          <button class="project-notes-link" data-project="ai-gesture-control">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-lifelink"><span class="project-number">04 / INNOVATION</span><div class="project-symbol">+</div><span class="art-bottom-label">CARE THROUGH DESIGN</span></div>
-          <div class="project-card-info"><div><p class="project-category">ASSISTIVE TECHNOLOGY</p><h3>LifeLink</h3></div><button class="round-arrow" data-project="lifelink" aria-label="Explore LifeLink">↗</button></div>
+        <article class="project-card" data-project-card="lifelink">
+          <div class="project-art art-lifelink">
+            <span class="project-number">04 / INNOVATION</span>
+            <div class="project-symbol">+</div>
+            <span class="art-bottom-label">CARE THROUGH DESIGN</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">ASSISTIVE TECHNOLOGY</p><h3>LifeLink</h3></div>
+            <button class="round-arrow" data-project="lifelink" aria-label="View LifeLink project notes">↗</button>
+          </div>
           <p class="project-summary">A concept for supporting senior-care routines and reminders.</p>
+          <button class="project-notes-link" data-project="lifelink">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-gitclub"><span class="project-number">05 / COMMUNITY</span><div class="project-symbol">{ }</div><span class="art-bottom-label">BUILD TOGETHER</span></div>
-          <div class="project-card-info"><div><p class="project-category">OPEN SOURCE</p><h3>GitClub</h3></div><button class="round-arrow" data-project="gitclub" aria-label="Explore GitClub">↗</button></div>
+        <article class="project-card" data-project-card="gitclub">
+          <div class="project-art art-gitclub">
+            <span class="project-number">05 / COMMUNITY</span>
+            <div class="project-symbol">{ }</div>
+            <span class="art-bottom-label">BUILD TOGETHER</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">OPEN SOURCE</p><h3>GitClub</h3></div>
+            <button class="round-arrow" data-project="gitclub" aria-label="View GitClub project notes">↗</button>
+          </div>
           <p class="project-summary">A student initiative to help others explore GitHub and collaboration.</p>
+          <button class="project-notes-link" data-project="gitclub">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-specwise"><span class="project-number">06 / WEB APP</span><div class="project-symbol">⌘</div><span class="art-bottom-label">UNDERSTAND YOUR MACHINE</span></div>
-          <div class="project-card-info"><div><p class="project-category">WEB DEVELOPMENT</p><h3>SpecWise</h3></div><button class="round-arrow" data-project="specwise" aria-label="Explore SpecWise">↗</button></div>
+        <article class="project-card" data-project-card="specwise">
+          <div class="project-art art-specwise">
+            <span class="project-number">06 / WEB APP</span>
+            <div class="project-symbol">⌘</div>
+            <span class="art-bottom-label">UNDERSTAND YOUR MACHINE</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">WEB DEVELOPMENT</p><h3>SpecWise</h3></div>
+            <button class="round-arrow" data-project="specwise" aria-label="View SpecWise project notes">↗</button>
+          </div>
           <p class="project-summary">A PC capability analyzer concept for understanding hardware and usage.</p>
+          <button class="project-notes-link" data-project="specwise">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
-          <div class="project-art art-swasth"><span class="project-number">07 / WELLNESS</span><div class="project-symbol">✚</div><span class="art-bottom-label">HEALTHIER EVERYDAY LIVES</span></div>
-          <div class="project-card-info"><div><p class="project-category">APP CONCEPT</p><h3>Swasth Bharat</h3></div><button class="round-arrow" data-project="swasth-bharat" aria-label="Explore Swasth Bharat">↗</button></div>
+        <article class="project-card" data-project-card="swasth-bharat">
+          <div class="project-art art-swasth">
+            <span class="project-number">07 / WELLNESS</span>
+            <div class="project-symbol">✚</div>
+            <span class="art-bottom-label">HEALTHIER EVERYDAY LIVES</span>
+          </div>
+          <div class="project-card-info">
+            <div><p class="project-category">APP CONCEPT</p><h3>Swasth Bharat</h3></div>
+            <button class="round-arrow" data-project="swasth-bharat" aria-label="View Swasth Bharat project notes">↗</button>
+          </div>
           <p class="project-summary">A family wellness app concept inspired by everyday Indian life.</p>
+          <button class="project-notes-link" data-project="swasth-bharat">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
 
-        <article class="project-card">
+        <article class="project-card" data-project-card="it-rural-quiz">
           <div class="project-art art-quiz">
             <span class="project-number">08 / TECHNOLOGY QUIZ</span>
             <div class="project-symbol">IT</div>
@@ -224,16 +258,19 @@
           </div>
           <div class="project-card-info">
             <div><p class="project-category">COMPETITION · LEARNING</p><h3>TCS IT Rural Quiz</h3></div>
-            <button class="round-arrow" data-project="it-rural-quiz" aria-label="Explore TCS IT Rural Quiz experience">↗</button>
+            <button class="round-arrow" data-project="it-rural-quiz" aria-label="View TCS IT Rural Quiz notes">↗</button>
           </div>
           <p class="project-summary">Preparing and participating in a technology quiz, exploring IT concepts, digital innovation and the technology ecosystem.</p>
+          <button class="project-notes-link" data-project="it-rural-quiz">
+            <span>VIEW PROJECT NOTES</span><span aria-hidden="true">↗</span>
+          </button>
         </article>
       </div>
     </section>
 
     <!-- PROJECT DETAIL -->
     <section class="page" data-page="project-detail" id="project-detail">
-      <button class="back-link" data-go="projects">← Back to projects</button>
+      <button class="back-link" data-go="projects">← Back to all projects</button>
       <div id="project-detail-content">
         <p class="eyebrow">PROJECT / DETAILS</p>
         <h1>Ideas in <span>progress.</span></h1>
@@ -310,20 +347,14 @@
           <div class="achievement-copy">
             <p class="project-category">ARTIFICIAL INTELLIGENCE · LEARNING</p>
             <h2>Intel AI Bootcamp</h2>
-            <p>
-              Explored artificial intelligence through the Intel AI Bootcamp,
-              building my understanding of AI concepts and their potential
-              applications in real-world problems.
-            </p>
+            <p>Explored artificial intelligence concepts through an AI learning experience, building my understanding of how AI works and where it can be applied.</p>
             <span class="achievement-tag">AI LEARNING & EXPLORATION</span>
           </div>
           <div class="achievement-side">AI<span>↗</span></div>
         </article>
       </div>
 
-      <p class="achievement-note">
-        Every milestone is part of the journey. More to learn, more to build.
-      </p>
+      <p class="achievement-note">Every milestone is part of the journey. More to learn, more to build.</p>
     </section>
 
     <!-- ABOUT -->
@@ -331,21 +362,14 @@
       <div class="page-intro">
         <p class="eyebrow">A LITTLE ABOUT ME / 004</p>
         <h1>Curiosity is my <span>starting point.</span></h1>
-        <p>
-          I'm a student developer, maker and explorer who enjoys learning
-          how technology works by building and experimenting.
-        </p>
+        <p>I'm a student developer, maker and explorer who enjoys learning how technology works by building and experimenting.</p>
       </div>
 
       <div class="about-grid">
         <article class="about-panel about-intro">
           <p class="eyebrow">WHO I AM</p>
           <h2>Learning isn't just reading about it. It's <span>trying it.</span></h2>
-          <p>
-            From robotics and electronics to websites and science projects,
-            I enjoy turning questions into experiments. I don't know
-            everything yet—and that's what makes learning exciting.
-          </p>
+          <p>From robotics and electronics to websites and science projects, I enjoy turning questions into experiments. I don't know everything yet—and that's what makes learning exciting.</p>
         </article>
 
         <article class="about-panel">
@@ -378,16 +402,16 @@
               CAD and web development.
             </p>
             <a class="button button-primary z2m-button"
-              href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
-              target="_blank" rel="noopener noreferrer">
+               href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
+               target="_blank" rel="noopener noreferrer">
               Explore my Zero2Maker website <span>↗</span>
             </a>
           </div>
 
           <a class="z2m-visual"
-            href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
-            target="_blank" rel="noopener noreferrer"
-            aria-label="Open my Zero2Maker learning website">
+             href="https://harshilkachlia369.github.io/harshilkachaliagoogleslides2/"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Open my Zero2Maker learning website">
             <div class="z2m-grid"></div>
             <div class="z2m-circle"></div>
             <span class="z2m-number">Z2M</span>
@@ -403,7 +427,6 @@
         <a class="button button-primary" href="mailto:exp.hrk@gmail.com">Get in touch ↗</a>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
@@ -411,6 +434,5 @@
     <p>Made with curiosity by Harshil Kachalia.</p>
     <a href="mailto:exp.hrk@gmail.com">EMAIL ↗</a>
   </footer>
-
 </body>
 </html>
