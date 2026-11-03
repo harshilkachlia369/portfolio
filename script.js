@@ -1,12 +1,14 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
+  // =========================================
   // PORTFOLIO SETUP
+  // =========================================
 
   const pages = document.querySelectorAll("[data-page]");
   const navLinks = document.querySelectorAll(".nav-link[data-go]");
   const transitionOverlay = document.querySelector(".transition-wipe");
-  const transitionMessage = document.querySelector(".transition-message");
 
   const cursorHalo = document.querySelector(".cursor-halo");
   const cursorDot = document.querySelector(".cursor-dot");
@@ -15,15 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let transitionTimer = null;
   let transitionEndTimer = null;
 
-  const transitionMessages = {
-    home: "BACK TO THE BEGINNING",
-    projects: "ENTERING THE WORKSHOP",
-    achievements: "MILESTONES UNLOCKED",
-    about: "THE PERSON BEHIND THE PROJECTS",
-    "project-detail": "EXPLORING IDEAS"
-  };
-
+  // =========================================
   // PROJECT INFORMATION
+  // =========================================
 
   const projects = {
     "plant-whisperer": {
@@ -147,28 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // TRANSITION LABEL
-
-  function setTransitionMessage(destination) {
-    if (!transitionMessage) return;
-
-    const message = transitionMessages[destination] || "EXPLORING IDEAS";
-    const accent = transitionMessage.querySelector(".accent-text");
-
-    // Keep the orange accent dot as a separate element.
-    transitionMessage.textContent = message;
-
-    if (accent) {
-      transitionMessage.appendChild(accent);
-    } else {
-      const dot = document.createElement("span");
-      dot.className = "accent-text";
-      dot.textContent = ".";
-      transitionMessage.appendChild(dot);
-    }
-  }
-
+  // =========================================
   // PAGE NAVIGATION
+  // =========================================
 
   function navigateTo(pageName) {
     const targetPage = document.querySelector(
@@ -183,17 +160,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     pages.forEach((page) => {
-      const isActive = page === targetPage;
-      page.classList.toggle("active", isActive);
-      page.setAttribute("aria-hidden", isActive ? "false" : "true");
+      page.classList.toggle("active", page === targetPage);
+      page.setAttribute(
+        "aria-hidden",
+        page === targetPage ? "false" : "true"
+      );
     });
 
-    // Keep Projects highlighted while a project's notes are open.
-    const activeNavPage =
-      pageName === "project-detail" ? "projects" : pageName;
-
     navLinks.forEach((link) => {
-      const active = link.dataset.go === activeNavPage;
+      const active =
+        link.dataset.go === pageName ||
+        (pageName === "project-detail" && link.dataset.go === "projects");
 
       link.classList.toggle("active", active);
 
@@ -212,7 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
+  // =========================================
   // PROJECT DETAILS
+  // =========================================
 
   function renderProjectDetail(projectId) {
     const project = projects[projectId];
@@ -227,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!detailContainer) {
       console.error(
-        'Missing #project-detail-content in index.html.'
+        'Missing #project-detail-content in index.html. Add <div id="project-detail-content"></div> inside the project-detail page.'
       );
       return;
     }
@@ -254,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="project-detail-meta">
         <p>
-          <strong>PROJECT STATUS</strong>
+          <strong>STATUS</strong>
           <span>${project.status}</span>
         </p>
 
@@ -266,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <button
         type="button"
-        class="button button-primary project-detail-back"
+        class="button button-primary"
         data-go="projects"
       >
         ← Back to all projects
@@ -276,20 +255,36 @@ document.addEventListener("DOMContentLoaded", () => {
     navigateTo("project-detail");
   }
 
+  // =========================================
   // TRANSITION EFFECT
+  // =========================================
 
-  function playTransition(callback, destination = "projects") {
+  function playTransition(callback, destination = "") {
     if (typeof callback !== "function") return;
 
-    setTransitionMessage(destination);
-
-    // Navigation still works if the overlay is missing.
+    // Navigation still works if the overlay is absent.
     if (!transitionOverlay || isTransitioning) {
       callback();
       return;
     }
 
     isTransitioning = true;
+
+    const transitionLabels = {
+      home: "BACK TO THE BEGINNING",
+      projects: "ENTERING THE WORKSHOP",
+      achievements: "MILESTONES UNLOCKED",
+      about: "THE PERSON BEHIND THE PROJECTS",
+      "project-detail": "EXPLORING IDEAS"
+    };
+
+    const message = transitionOverlay.querySelector(
+      ".transition-message"
+    );
+
+    if (message && transitionLabels[destination]) {
+      message.firstChild.textContent = transitionLabels[destination];
+    }
 
     window.clearTimeout(transitionTimer);
     window.clearTimeout(transitionEndTimer);
@@ -311,27 +306,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 950);
   }
 
+  // =========================================
   // NAVIGATION AND PROJECT CLICK HANDLING
+  // =========================================
 
   document.addEventListener("click", (event) => {
     const target = event.target;
 
     if (!(target instanceof Element)) return;
-
-    const projectButton = target.closest("[data-project]");
-
-    if (projectButton) {
-      event.preventDefault();
-
-      const projectId = projectButton.dataset.project;
-
-      playTransition(
-        () => renderProjectDetail(projectId),
-        "project-detail"
-      );
-
-      return;
-    }
 
     const goButton = target.closest("[data-go]");
 
@@ -350,14 +332,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
       event.preventDefault();
 
+      // A project-detail button can be used to return to Projects.
+      if (destination === "project-detail") {
+        navigateTo(destination);
+      } else {
+        playTransition(() => navigateTo(destination), destination);
+      }
+
+      return;
+    }
+
+    const projectButton = target.closest("[data-project]");
+
+    if (projectButton) {
+      event.preventDefault();
+
+      const projectId = projectButton.dataset.project;
+
       playTransition(
-        () => navigateTo(destination),
-        destination
+        () => renderProjectDetail(projectId),
+        "project-detail"
       );
     }
   });
 
+  // =========================================
   // CUSTOM CURSOR
+  // =========================================
 
   const finePointer = window.matchMedia(
     "(hover: hover) and (pointer: fine)"
@@ -398,28 +399,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // =========================================
   // KEYBOARD SUPPORT
+  // =========================================
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-
-    const detailPage = document.querySelector(
-      '[data-page="project-detail"]'
-    );
-
-    if (detailPage && detailPage.classList.contains("active")) {
-      playTransition(
-        () => navigateTo("projects"),
-        "projects"
+    if (event.key === "Escape") {
+      const detailPage = document.querySelector(
+        '[data-page="project-detail"]'
       );
+
+      if (detailPage && detailPage.classList.contains("active")) {
+        playTransition(
+          () => navigateTo("projects"),
+          "projects"
+        );
+      }
     }
   });
 
+  // =========================================
   // INITIALISE PORTFOLIO
+  // =========================================
 
   if (pages.length === 0) {
     console.error(
-      "No elements with [data-page] were found. Check index.html."
+      'No elements with [data-page] were found. Check your index.html page sections.'
     );
     return;
   }
